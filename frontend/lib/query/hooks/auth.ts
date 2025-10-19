@@ -188,3 +188,45 @@ export const useLogout = () => {
     },
   });
 };
+
+// Hook for checking user authentication via backend API
+export const useCheckUser = () => {
+  const { success, error: showError } = useNotifications();
+
+  return useMutation({
+    mutationFn: async () => {
+      const response = await fetch("/api/v1/check-user", {
+        method: "GET",
+        credentials: "include", // Include cookies
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (data.status === "error") {
+        throw new Error(data.message || "Authentication check failed");
+      }
+
+      return data;
+    },
+    onSuccess: (data) => {
+      if (data.data.authenticated) {
+        success(
+          "Authentication Verified",
+          `User: ${data.data.user.email} is authenticated`
+        );
+      } else {
+        showError("Authentication Failed", "User is not authenticated");
+      }
+    },
+    onError: (error: unknown) => {
+      ErrorHandler.handle(error, "check-user");
+    },
+  });
+};

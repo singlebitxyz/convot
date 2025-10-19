@@ -168,7 +168,7 @@ export default function DashboardPage() {
           <ProfileOverview user={user} profile={profile || null} />
         </div>
 
-        {/* Quick Actions */}
+        {/* Quick Actions - Includes Check User Auth button to test backend API */}
         <QuickActions />
       </div>
 

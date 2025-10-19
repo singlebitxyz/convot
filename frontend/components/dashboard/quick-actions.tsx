@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Bell, FileText, Settings, Shield, Zap } from "lucide-react";
+import { Bell, CheckCircle, FileText, Settings, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,6 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useCheckUser } from "@/lib/query/hooks/auth";
 
 interface QuickAction {
   label: string;
@@ -48,6 +49,11 @@ export function QuickActions({
   actions = defaultActions,
   compact = false,
 }: QuickActionsProps) {
+  const checkUser = useCheckUser();
+
+  const handleCheckUser = () => {
+    checkUser.mutate();
+  };
   return (
     <Card>
       <CardHeader className={compact ? "pb-3" : ""}>
@@ -85,6 +91,19 @@ export function QuickActions({
 
           return <div key={index}>{buttonContent}</div>;
         })}
+
+        {/* Check User Authentication Button */}
+        <Button
+          variant="outline"
+          className={`w-full justify-start ${compact ? "h-9 text-sm" : "h-10"}`}
+          onClick={handleCheckUser}
+          disabled={checkUser.isPending}
+        >
+          <CheckCircle
+            className={`mr-2 ${compact ? "h-3 w-3" : "h-4 w-4"} ${checkUser.isPending ? "animate-spin" : ""}`}
+          />
+          {checkUser.isPending ? "Checking..." : "Check User Auth"}
+        </Button>
       </CardContent>
     </Card>
   );

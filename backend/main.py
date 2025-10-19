@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 # Create FastAPI app
 app = FastAPI(
     title=settings.app_name,
-    description="Niya FastAPI Template - Production-ready backend with Supabase authentication",
+    description="Niya FastAPI Template - Production-ready backend with user authentication check",
     version="1.0.0",
     debug=settings.debug
 )
@@ -36,7 +36,7 @@ async def rate_limit(request: Request, call_next):
     return await rate_limit_middleware(request, call_next)
 
 # Include routers
-app.include_router(router, prefix="/api/v1", tags=["authentication"])
+app.include_router(router, prefix="/api/v1", tags=["user"])
 
 
 @app.exception_handler(BaseAPIException)
