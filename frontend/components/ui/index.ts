@@ -35,6 +35,18 @@ export {
 } from "./select";
 export { Separator } from "./separator";
 export { Tabs, TabsContent, TabsList, TabsTrigger } from "./tabs";
+export {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogOverlay,
+  DialogPortal,
+  DialogTitle,
+  DialogTrigger,
+} from "./dialog";
 
 // MagicUI components
 export { AnimatedBeam } from "./magicui/animated-beam";

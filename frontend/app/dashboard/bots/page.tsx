@@ -2,20 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Plus, Bot as BotIcon, Settings, Trash2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useBots, useDeleteBot } from "@/lib/query/hooks/bots";
-import { useNotifications } from "@/lib/hooks/use-notifications";
-import type { Bot } from "@/lib/types/bot";
-import { Badge } from "@/components/ui/badge";
+import { Bot as BotIcon, Plus, Settings, Trash2 } from "lucide-react";
+import BotCreateDialog from "@/components/dashboard/bots/bot-create-dialog";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -26,9 +14,30 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useNotifications } from "@/lib/hooks/use-notifications";
+import { useBots, useDeleteBot } from "@/lib/query/hooks/bots";
+import type { Bot } from "@/lib/types/bot";
 
 // Bot Card Component
-function BotCard({ bot, onEdit, onDelete }: { bot: Bot; onEdit: () => void; onDelete: () => void }) {
+function BotCard({
+  bot,
+  onEdit,
+  onDelete,
+}: {
+  bot: Bot;
+  onEdit: () => void;
+  onDelete: () => void;
+}) {
   return (
     <Card className="hover:shadow-lg transition-shadow">
       <CardHeader>
@@ -88,6 +97,7 @@ export default function BotsPage() {
   const { success, error: showError } = useNotifications();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [botToDelete, setBotToDelete] = useState<Bot | null>(null);
+  const [createDialogOpen, setCreateDialogOpen] = useState(false);
 
   const handleDeleteClick = (bot: Bot) => {
     setBotToDelete(bot);
@@ -99,7 +109,10 @@ export default function BotsPage() {
 
     deleteBot.mutate(botToDelete.id, {
       onSuccess: () => {
-        success("Bot Deleted", `"${botToDelete.name}" has been deleted successfully`);
+        success(
+          "Bot Deleted",
+          `"${botToDelete.name}" has been deleted successfully`
+        );
         setDeleteDialogOpen(false);
         setBotToDelete(null);
       },
@@ -144,7 +157,9 @@ export default function BotsPage() {
           <CardHeader>
             <CardTitle>Error Loading Bots</CardTitle>
             <CardDescription>
-              {error instanceof Error ? error.message : "An unknown error occurred"}
+              {error instanceof Error
+                ? error.message
+                : "An unknown error occurred"}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -174,10 +189,7 @@ export default function BotsPage() {
         <Button
           size="lg"
           className="gap-2"
-          onClick={() => {
-            // TODO: Open create bot modal
-            console.log("Create bot clicked");
-          }}
+          onClick={() => setCreateDialogOpen(true)}
         >
           <Plus className="h-5 w-5" />
           Create Bot
@@ -209,10 +221,7 @@ export default function BotsPage() {
             <Button
               size="lg"
               className="gap-2"
-              onClick={() => {
-                // TODO: Open create bot modal
-                console.log("Create bot clicked");
-              }}
+              onClick={() => setCreateDialogOpen(true)}
             >
               <Plus className="h-5 w-5" />
               Create Your First Bot
@@ -227,9 +236,9 @@ export default function BotsPage() {
           <AlertDialogHeader>
             <AlertDialogTitle>Are you sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This will permanently delete the bot "{botToDelete?.name}". This action
-              cannot be undone and will delete all associated data including sources,
-              chunks, and queries.
+              This will permanently delete the bot &quot;{botToDelete?.name}
+              &quot;. This action cannot be undone and will delete all
+              associated data including sources, chunks, and queries.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -246,7 +255,12 @@ export default function BotsPage() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Create Bot Dialog */}
+      <BotCreateDialog
+        open={createDialogOpen}
+        onOpenChange={setCreateDialogOpen}
+      />
     </div>
   );
 }
-
