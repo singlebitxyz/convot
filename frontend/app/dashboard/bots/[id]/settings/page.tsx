@@ -11,6 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import BotTestChat from "@/components/dashboard/bots/bot-test-chat";
 import BotSettingsForm from "@/components/dashboard/bots/bot-settings-form";
 import BotTrainMode from "@/components/dashboard/bots/bot-train-mode";
+import BotWidgetManagement from "@/components/dashboard/bots/bot-widget-management";
 
 export default function BotSettingsPage() {
   const params = useParams();
@@ -73,14 +74,19 @@ export default function BotSettingsPage() {
 
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="grid w-full max-w-md grid-cols-3">
+        <TabsList className="grid w-full max-w-lg grid-cols-4">
           <TabsTrigger value="settings">Settings</TabsTrigger>
+          <TabsTrigger value="widget">Widget</TabsTrigger>
           <TabsTrigger value="test">Test</TabsTrigger>
           <TabsTrigger value="train">Train</TabsTrigger>
         </TabsList>
 
         <TabsContent value="settings" className="space-y-6">
           <BotSettingsForm bot={bot} />
+        </TabsContent>
+
+        <TabsContent value="widget" className="space-y-6">
+          <BotWidgetManagement botId={bot.id} />
         </TabsContent>
 
         <TabsContent value="test" className="space-y-6">
