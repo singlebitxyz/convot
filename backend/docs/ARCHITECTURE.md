@@ -37,7 +37,7 @@ niya-fastapi/
 ├── models/                  # Data Models
 │   ├── __init__.py
 │   └── user_model.py        # Pydantic models
-├── repositorys/             # Data Access Layer
+├── repositories/            # Data Access Layer
 │   ├── __init__.py
 │   └── user_repo.py         # User data operations
 ├── services/                # Business Logic
@@ -167,7 +167,7 @@ auth_middleware.set_auth_cookies(response, session_data)
 -   Automatic API documentation
 -   Type safety
 
-### 5. Data Access Layer (`repositorys/`)
+### 5. Data Access Layer (`repositories/`)
 
 **Purpose**: Database operations and data persistence
 
@@ -243,7 +243,7 @@ async def signup(user: UserModel):
     - Data transformation
     - Error handling
 
-4. **Repository Layer** (`repositorys/`)
+4. **Repository Layer** (`repositories/`)
 
     - Database operations
     - Data persistence
@@ -329,7 +329,7 @@ async def signup(user: UserModel):
 
 ```env
 SUPABASE_URL="your_supabase_url"
-SUPABASE_KEY="your_supabase_key"
+SUPABASE_ANON_KEY="your_supabase_anon_key"
 JWT_SECRET="your_jwt_secret"
 COOKIE_SECURE=true
 COOKIE_HTTPONLY=true
@@ -342,7 +342,7 @@ LOG_LEVEL=INFO
 ```python
 class Settings(BaseSettings):
     supabase_url: str = Field(..., env="SUPABASE_URL")
-    supabase_key: str = Field(..., env="SUPABASE_KEY")
+    supabase_anon_key: str = Field(..., env="SUPABASE_ANON_KEY")
     # ... other settings
 ```
 

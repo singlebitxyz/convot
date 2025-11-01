@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     
     # Supabase Configuration
     supabase_url: str = Field(..., env="SUPABASE_URL")
-    supabase_key: str = Field(..., env="SUPABASE_KEY")
+    supabase_anon_key: str = Field(..., env="SUPABASE_ANON_KEY")
     
     # Security Settings
     jwt_secret: str = Field(default="your-secret-key", env="JWT_SECRET")

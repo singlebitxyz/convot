@@ -2,7 +2,8 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 import logging
-from controller.user import router
+from controller.user import router as user_router
+from controller.bot import router as bot_router
 from config.settings import settings
 from core.exceptions import BaseAPIException
 from core.logging import setup_logging
@@ -36,7 +37,8 @@ async def rate_limit(request: Request, call_next):
     return await rate_limit_middleware(request, call_next)
 
 # Include routers
-app.include_router(router, prefix="/api/v1", tags=["user"])
+app.include_router(user_router, prefix="/api/v1", tags=["user"])
+app.include_router(bot_router, prefix="/api/v1", tags=["bot"])
 
 
 @app.exception_handler(BaseAPIException)

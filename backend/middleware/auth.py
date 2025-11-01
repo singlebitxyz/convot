@@ -12,7 +12,8 @@ class AuthMiddleware:
     """Authentication middleware for Supabase cookie validation"""
     
     def __init__(self):
-        self.supabase = get_supabase_client()
+        # Use service role for auth validation (legitimate admin operation)
+        self.supabase = get_supabase_client(use_service_role=True)
     
     async def get_current_user_from_cookie(self, request: Request) -> Optional[Dict[str, Any]]:
         """Get current user from Supabase auth token cookie"""

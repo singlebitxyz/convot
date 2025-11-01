@@ -71,9 +71,9 @@ class FeatureResponseModel(BaseModel):
 -   Include response models for API documentation
 -   Use `Optional` for nullable fields
 
-### Step 3: Create Repository (`repositorys/`)
+### Step 3: Create Repository (`repositories/`)
 
-**File**: `repositorys/feature_repo.py`
+**File**: `repositories/feature_repo.py`
 
 **Pattern**:
 
@@ -161,7 +161,7 @@ class FeatureRepository:
 from typing import Dict, Any, Optional, List
 import logging
 from models.feature_model import FeatureModel, FeatureResponseModel
-from repositorys.feature_repo import FeatureRepository
+from repositories.feature_repo import FeatureRepository
 from core.exceptions import ValidationError
 
 logger = logging.getLogger(__name__)
@@ -272,7 +272,7 @@ from fastapi import APIRouter, Request, Response, Depends
 from typing import Dict, Any, List
 import logging
 from models.feature_model import FeatureModel, FeatureResponseModel
-from repositorys.feature_repo import FeatureRepository
+from repositories.feature_repo import FeatureRepository
 from services.feature_service import FeatureService
 from middleware.auth import require_authentication
 from core.exceptions import ValidationError
@@ -519,7 +519,7 @@ return {"status": "ok", "data": items_list}
 class FeatureModel(BaseModel):
     field1: str = Field(..., description="Description")
 
-# 2. Repository (repositorys/feature_repo.py)
+# 2. Repository (repositories/feature_repo.py)
 class FeatureRepository:
     def create_feature(self, data): pass
     def get_feature(self, id): pass
@@ -540,7 +540,7 @@ async def create_feature(feature: FeatureModel, request: Request): pass
 **Files Created**:
 
 1. `models/user_profile_model.py` - Profile data models
-2. `repositorys/user_profile_repo.py` - Profile database operations
+2. `repositories/user_profile_repo.py` - Profile database operations
 3. `services/user_profile_service.py` - Profile business logic
 4. `controller/user_profile.py` - Profile API endpoints
 

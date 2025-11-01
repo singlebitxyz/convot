@@ -57,7 +57,7 @@ Create `.env` file:
 
 ```env
 SUPABASE_URL="your_supabase_project_url"
-SUPABASE_KEY="your_supabase_anon_key"
+SUPABASE_ANON_KEY="your_supabase_anon_key"
 JWT_SECRET="your_jwt_secret_key"
 COOKIE_SECURE=true
 COOKIE_HTTPONLY=true
@@ -132,7 +132,7 @@ niya-fastapi/
 ├── core/           # Exceptions & logging
 ├── middleware/     # Auth & rate limiting
 ├── models/         # Pydantic models
-├── repositorys/    # Data access layer
+├── repositories/   # Data access layer
 ├── services/       # Business logic
 ├── controller/     # API endpoints
 ├── docs/           # Complete documentation
