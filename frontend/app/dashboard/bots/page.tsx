@@ -2,7 +2,16 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Bot as BotIcon, Plus, Settings, Trash2 } from "lucide-react";
+import {
+  Bot as BotIcon,
+  Calendar,
+  ChevronRight,
+  MessageSquare,
+  Plus,
+  Settings,
+  Sparkles,
+  Trash2,
+} from "lucide-react";
 import BotCreateDialog from "@/components/dashboard/bots/bot-create-dialog";
 import {
   AlertDialog,
@@ -27,62 +36,139 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useNotifications } from "@/lib/hooks/use-notifications";
 import { useBots, useDeleteBot } from "@/lib/query/hooks/bots";
 import type { Bot } from "@/lib/types/bot";
+import { cn } from "@/lib/utils";
 
 // Bot Card Component
 function BotCard({
   bot,
+  onView,
   onEdit,
   onDelete,
 }: {
   bot: Bot;
+  onView: () => void;
   onEdit: () => void;
   onDelete: () => void;
 }) {
+  // Mock stats - will be replaced with real data
+  const mockStats = {
+    queries: 244,
+    sessions: 12,
+  };
+
   return (
-    <Card className="hover:shadow-lg transition-shadow">
-      <CardHeader>
-        <div className="flex items-start justify-between">
-          <div className="flex items-center gap-3">
-            <div className="flex aspect-square size-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
-              <BotIcon className="size-5" />
+    <Card
+      className={cn(
+        "group relative overflow-hidden transition-all duration-300 cursor-pointer",
+        "border border-border hover:border-primary/50",
+        "hover:shadow-lg hover:shadow-primary/5",
+        "hover:-translate-y-1 bg-card"
+      )}
+      onClick={onView}
+    >
+      <CardHeader className="pb-4">
+        <div className="flex items-start justify-between gap-3 mb-3">
+          <div className="flex items-center gap-3 flex-1 min-w-0">
+            <div
+              className={cn(
+                "flex aspect-square size-14 items-center justify-center rounded-xl shrink-0",
+                "bg-primary/10 border border-primary/20",
+                "group-hover:bg-primary/20 group-hover:border-primary/30",
+                "transition-all duration-300"
+              )}
+            >
+              <BotIcon className="size-7 text-primary" />
             </div>
-            <div>
-              <CardTitle className="text-lg">{bot.name}</CardTitle>
-              <CardDescription className="mt-1">
-                {bot.description || "No description"}
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 mb-1">
+                <CardTitle className="text-xl font-bold truncate">
+                  {bot.name}
+                </CardTitle>
+                <ChevronRight
+                  className={cn(
+                    "size-4 text-muted-foreground",
+                    "opacity-0 group-hover:opacity-100 group-hover:translate-x-1",
+                    "transition-all duration-300"
+                  )}
+                />
+              </div>
+              <CardDescription className="line-clamp-2 text-sm">
+                {bot.description || "No description provided"}
               </CardDescription>
             </div>
           </div>
-          <Badge variant="outline">{bot.llm_provider}</Badge>
+          <Badge
+            variant="secondary"
+            className="shrink-0 font-semibold px-3 py-1"
+          >
+            {bot.llm_provider.toUpperCase()}
+          </Badge>
         </div>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-3">
-          <div className="text-sm text-muted-foreground line-clamp-2">
-            {bot.system_prompt}
+
+        {bot.system_prompt && (
+          <div className="mt-3 flex items-start gap-2 p-3 rounded-lg bg-muted/50 border border-border">
+            <Sparkles className="size-4 text-muted-foreground mt-0.5 shrink-0" />
+            <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
+              {bot.system_prompt}
+            </p>
           </div>
-          <div className="flex items-center justify-between pt-2 border-t">
-            <div className="text-xs text-muted-foreground">
-              Created {new Date(bot.created_at).toLocaleDateString()}
+        )}
+      </CardHeader>
+
+      <CardContent className="pt-0">
+        {/* Stats Preview */}
+        <div className="grid grid-cols-2 gap-3 mb-4">
+          <div className="flex items-center gap-2 p-3 rounded-lg bg-muted/30 border border-border">
+            <MessageSquare className="size-4 text-muted-foreground" />
+            <div className="flex-1 min-w-0">
+              <p className="text-xs text-muted-foreground">Queries</p>
+              <p className="text-sm font-semibold">{mockStats.queries}</p>
             </div>
-            <div className="flex items-center gap-2">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={onEdit}
-                className="h-8"
-              >
-                <Settings className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={onDelete}
-                className="h-8 text-destructive hover:text-destructive"
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
+          </div>
+          <div className="flex items-center gap-2 p-3 rounded-lg bg-muted/30 border border-border">
+            <Calendar className="size-4 text-muted-foreground" />
+            <div className="flex-1 min-w-0">
+              <p className="text-xs text-muted-foreground">Sessions</p>
+              <p className="text-sm font-semibold">{mockStats.sessions}</p>
             </div>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="flex items-center justify-between pt-4 border-t">
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            <Calendar className="size-3" />
+            <span>
+              {new Date(bot.created_at).toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+              })}
+            </span>
+          </div>
+          <div className="flex items-center gap-1">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={(e) => {
+                e.stopPropagation();
+                onEdit();
+              }}
+              className="h-8 w-8 p-0 opacity-70 hover:opacity-100"
+            >
+              <Settings className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={(e) => {
+                e.stopPropagation();
+                onDelete();
+              }}
+              className="h-8 w-8 p-0 text-destructive opacity-70 hover:opacity-100 hover:bg-destructive/10"
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
           </div>
         </div>
       </CardContent>
@@ -203,6 +289,9 @@ export default function BotsPage() {
             <BotCard
               key={bot.id}
               bot={bot}
+              onView={() => {
+                router.push(`/dashboard/bots/${bot.id}`);
+              }}
               onEdit={() => {
                 router.push(`/dashboard/bots/${bot.id}/settings`);
               }}

@@ -48,6 +48,14 @@ export {
   DialogTrigger,
 } from "./dialog";
 
+export {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  ChartLegend,
+  ChartLegendContent,
+} from "./chart";
+
 // MagicUI components
 export { AnimatedBeam } from "./magicui/animated-beam";
 export { AnimatedList } from "./magicui/animated-list";
