@@ -14,14 +14,15 @@ We'll implement one feature group at a time, building backend APIs first, then t
 
 ## 📋 Implementation Status Summary
 
-**Completed Phases**: 4/14
+**Completed Phases**: 5/14
 
 -   ✅ Phase 1: Foundation & Bot Management
 -   ✅ Phase 2: Widget Token Management
 -   ✅ Phase 3: Source Management
 -   ✅ Phase 4: Document Parsing & Text Extraction
+-   ✅ Phase 5: Text Chunking & Metadata Extraction (Backend)
 
-**Next Phase**: Phase 5 - Text Chunking & Metadata Extraction
+**Next Phase**: Phase 6 - Embedding Generation & Vector Storage
 
 ---
 
@@ -315,23 +316,25 @@ We'll implement one feature group at a time, building backend APIs first, then t
 
 ---
 
-### **Phase 5: Text Chunking & Metadata Extraction** ✂️
+### **Phase 5: Text Chunking & Metadata Extraction** ✂️ ✅ COMPLETE
 
 **Goal**: Split extracted text into chunks with metadata.
 
-#### Backend (FastAPI)
+#### Backend (FastAPI) ✅
 
--   [ ] Chunking strategy service:
+-   [x] Chunking strategy service:
     -   Sentence-aware chunking
-    -   Overlap between chunks
+    -   Overlap between chunks (100 tokens default)
     -   Token estimation (tiktoken)
--   [ ] Metadata extraction:
-    -   Headings/titles
-    -   Character ranges
-    -   Publish dates (for web sources)
--   [ ] Chunk repository/service layer
--   [ ] Store chunks in database
--   [ ] Update source status after chunking
+-   [x] Metadata extraction:
+    -   Headings/titles (markdown-style, ALL CAPS patterns)
+    -   Character ranges (with overlap tracking)
+    -   Publish dates (for web sources, ready for Phase 7)
+-   [x] Chunk repository/service layer
+-   [x] Store chunks in database
+-   [x] Update source status after chunking
+-   [x] Chunk API endpoints (list by source, list by bot, get by ID)
+-   [x] Integration with parsing workflow (automatic chunking after parsing)
 
 #### Frontend (Next.js)
 
@@ -343,11 +346,19 @@ We'll implement one feature group at a time, building backend APIs first, then t
 
 **Acceptance Criteria**:
 
--   Text is split into appropriate chunks (500-1000 tokens)
--   Chunks have overlap for context
--   Headings are extracted when available
--   Chunks are stored with metadata
--   Token counts are accurate
+-   ✅ Text is split into appropriate chunks (target: 800 tokens, min: 100, max: 1200)
+-   ✅ Chunks have overlap for context (100 tokens default, reflected in char_range)
+-   ✅ Headings are extracted when available
+-   ✅ Chunks are stored with metadata
+-   ✅ Token counts are accurate (using tiktoken)
+
+**Implementation Details**:
+
+-   Created `ChunkingService` with sentence-aware chunking and overlap
+-   Implemented `Tokenizer` service using tiktoken for accurate token counting
+-   Created chunk models, repository, service layer, and API endpoints
+-   Integrated chunking into parsing workflow (automatic after text extraction)
+-   Character range tracking includes overlap regions
 
 ---
 

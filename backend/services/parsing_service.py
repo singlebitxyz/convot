@@ -13,6 +13,7 @@ from config.supabasedb import get_supabase_client
 from parsers.factory import ParserFactory
 from parsers.base import ParseResult
 from repositories.source_repo import SourceRepository
+from services.chunk_service import ChunkService
 from models.source_model import SourceStatus, SourceType
 
 logger = logging.getLogger(__name__)
@@ -40,6 +41,7 @@ class ParsingService:
         self.access_token = access_token
         self.parser_factory = ParserFactory()
         self.source_repo = SourceRepository(access_token=access_token)
+        self.chunk_service = ChunkService(access_token=access_token)
         self.storage_client = get_supabase_client(use_service_role=True)
     
     def parse_source(self, source_id: UUID, bot_id: UUID) -> bool:
@@ -156,15 +158,38 @@ class ParsingService:
                 if text_length <= 5000:
                     logger.debug(f"Full extracted text for source {source_id}:\n{extracted_text}")
                 
-                # Update status to indexed (for now, parsing = indexed)
-                # In Phase 5, we'll separate parsing and indexing
+                # Chunk the extracted text and store in database
+                logger.info(f"Starting chunking for source {source_id}")
+                try:
+                    created_chunks = self.chunk_service.chunk_and_store_source(
+                        source_id=source_id,
+                        bot_id=bot_id,
+                        text=extracted_text,
+                        source_type=SourceType(source_type)
+                    )
+                    
+                    logger.info(
+                        f"Successfully chunked source {source_id} into {len(created_chunks)} chunks"
+                    )
+                    
+                except Exception as e:
+                    logger.error(
+                        f"Error chunking source {source_id}: {str(e)}",
+                        exc_info=True
+                    )
+                    # Update status to failed if chunking fails
+                    self.source_repo.update_source_status(
+                        source_id=source_id,
+                        status=SourceStatus.FAILED.value,
+                        error_message=f"Chunking failed: {str(e)}"
+                    )
+                    return False
+                
+                # Update status to indexed (parsing and chunking complete)
                 self.source_repo.update_source_status(
                     source_id=source_id,
                     status=SourceStatus.INDEXED.value
                 )
-                
-                # TODO: In Phase 5, store extracted_text for chunking
-                # For now, we just log that parsing succeeded
                 
                 return True
             

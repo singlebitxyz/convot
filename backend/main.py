@@ -6,6 +6,7 @@ from controller.user import router as user_router
 from controller.bot import router as bot_router
 from controller.widget_token import widget_token_router
 from controller.source import source_router
+from controller.chunk import chunk_router
 from config.settings import settings
 from core.exceptions import BaseAPIException
 from core.logging import setup_logging
@@ -43,6 +44,7 @@ app.include_router(user_router, prefix="/api/v1", tags=["user"])
 app.include_router(bot_router, prefix="/api/v1", tags=["bot"])
 app.include_router(widget_token_router, prefix="/api/v1", tags=["widget-token"])
 app.include_router(source_router, prefix="/api/v1", tags=["source"])
+app.include_router(chunk_router, prefix="/api/v1", tags=["chunk"])
 
 
 @app.exception_handler(BaseAPIException)
