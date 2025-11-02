@@ -2,24 +2,15 @@
 
 import { useState } from "react";
 import {
-  FileText,
-  Globe,
-  Trash2,
   AlertCircle,
   CheckCircle2,
+  FileText,
+  Globe,
   Loader2,
+  Trash2,
   XCircle,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Skeleton } from "@/components/ui/skeleton";
+import { formatDistanceToNow } from "date-fns";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
   AlertDialog,
@@ -31,10 +22,20 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { useSources, useDeleteSource } from "@/lib/query/hooks/sources";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useNotifications } from "@/lib/hooks/use-notifications";
+import { useDeleteSource, useSources } from "@/lib/query/hooks/sources";
 import type { Source } from "@/lib/types/source";
-import { formatDistanceToNow } from "date-fns";
+import { ParsingProgress } from "./parsing-progress";
 
 interface SourceListProps {
   botId: string;
@@ -76,7 +77,9 @@ function StatusBadge({ status }: { status: Source["status"] }) {
         status === "parsing" ? "animate-pulse" : ""
       }`}
     >
-      <Icon className={`h-3 w-3 ${status === "parsing" ? "animate-spin" : ""}`} />
+      <Icon
+        className={`h-3 w-3 ${status === "parsing" ? "animate-spin" : ""}`}
+      />
       {config.label}
     </Badge>
   );
@@ -117,7 +120,9 @@ function SourceItem({
               )}
             </div>
             <div className="flex-1 min-w-0">
-              <CardTitle className="text-base truncate">{displayName}</CardTitle>
+              <CardTitle className="text-base truncate">
+                {displayName}
+              </CardTitle>
               <div className="flex items-center gap-2 mt-2">
                 <StatusBadge status={source.status} />
                 <Badge variant="outline" className="text-xs">
@@ -139,10 +144,10 @@ function SourceItem({
       </CardHeader>
       <CardContent className="pt-0 space-y-2">
         {source.error_message && (
-          <Alert variant="destructive">
+          <Alert variant="destructive" className="mt-2">
             <AlertCircle className="h-4 w-4" />
             <AlertDescription className="text-sm">
-              {source.error_message}
+              <strong>Parsing Error:</strong> {source.error_message}
             </AlertDescription>
           </Alert>
         )}
@@ -193,14 +198,19 @@ export default function SourceList({ botId }: SourceListProps) {
       onSuccess: () => {
         const displayName =
           sourceToDelete.source_type === "html"
-            ? sourceToDelete.original_url || sourceToDelete.canonical_url || "URL"
+            ? sourceToDelete.original_url ||
+              sourceToDelete.canonical_url ||
+              "URL"
             : sourceToDelete.storage_path.split("/").pop() || "File";
         success("Source Deleted", `"${displayName}" has been deleted`);
         setDeleteDialogOpen(false);
         setSourceToDelete(null);
       },
       onError: (error: unknown) => {
-        showError("Delete Failed", "Failed to delete source. Please try again.");
+        showError(
+          "Delete Failed",
+          "Failed to delete source. Please try again."
+        );
         console.error("Delete error:", error);
       },
     });
@@ -233,7 +243,9 @@ export default function SourceList({ botId }: SourceListProps) {
             Error Loading Sources
           </CardTitle>
           <CardDescription>
-            {error instanceof Error ? error.message : "An unknown error occurred"}
+            {error instanceof Error
+              ? error.message
+              : "An unknown error occurred"}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -249,18 +261,51 @@ export default function SourceList({ botId }: SourceListProps) {
     );
   }
 
+  // Separate active (parsing/uploaded) and completed sources
+  const activeSources =
+    sources?.filter(
+      (source) => source.status === "parsing" || source.status === "uploaded"
+    ) || [];
+  const completedSources =
+    sources?.filter(
+      (source) => source.status !== "parsing" && source.status !== "uploaded"
+    ) || [];
+
   return (
     <div className="space-y-4">
       {sources && sources.length > 0 ? (
         <div className="space-y-4">
-          {sources.map((source) => (
-            <SourceItem
-              key={source.id}
-              source={source}
-              onDelete={() => handleDeleteClick(source)}
-              isDeleting={deleteSource.isPending}
-            />
-          ))}
+          {/* Show parsing progress for active sources */}
+          {activeSources.length > 0 && (
+            <div className="space-y-3">
+              <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
+                <Loader2 className="h-4 w-4 animate-spin" />
+                <span>Processing ({activeSources.length})</span>
+              </div>
+              {activeSources.map((source) => (
+                <ParsingProgress key={source.id} source={source} />
+              ))}
+            </div>
+          )}
+
+          {/* Show completed sources */}
+          {completedSources.length > 0 && (
+            <div className="space-y-3">
+              {activeSources.length > 0 && (
+                <div className="text-sm font-medium text-muted-foreground pt-2 border-t">
+                  Completed ({completedSources.length})
+                </div>
+              )}
+              {completedSources.map((source) => (
+                <SourceItem
+                  key={source.id}
+                  source={source}
+                  onDelete={() => handleDeleteClick(source)}
+                  isDeleting={deleteSource.isPending}
+                />
+              ))}
+            </div>
+          )}
         </div>
       ) : (
         <Card>
@@ -305,4 +350,3 @@ export default function SourceList({ botId }: SourceListProps) {
     </div>
   );
 }
-

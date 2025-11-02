@@ -6,8 +6,8 @@ import logging
 
 dotenv.load_dotenv()
 
-# Configure logging
-logging.basicConfig(level=logging.INFO)
+# Logger will be configured by setup_logging() in main.py
+# Don't call basicConfig here as it interferes with proper logging setup
 logger = logging.getLogger(__name__)
 
 

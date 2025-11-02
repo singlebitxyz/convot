@@ -3,6 +3,7 @@
 // =====================================================
 // React Query hooks for source management operations
 // =====================================================
+import { useEffect, useRef } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNotifications } from "@/lib/hooks/use-notifications";
 import type {
@@ -72,14 +73,91 @@ const deleteSource = async (botId: string, sourceId: string): Promise<void> => {
 // =====================================================
 
 /**
- * Hook to fetch all sources for a bot
+ * Hook to fetch all sources for a bot with automatic polling for active parsing
  */
 export function useSources(botId: string) {
-  return useQuery<Source[], Error>({
+  const { success, error: showError } = useNotifications();
+  const previousDataRef = useRef<Source[] | undefined>(undefined);
+
+  const query = useQuery<Source[], Error>({
     queryKey: ["sources", botId],
     queryFn: () => getSources(botId),
     enabled: !!botId, // Only run query if botId is available
+    refetchInterval: (query) => {
+      // Poll every 2 seconds if there are sources with "parsing" or "uploaded" status
+      const data = query.state.data;
+      if (data && Array.isArray(data)) {
+        const hasActiveSources = data.some(
+          (source) =>
+            source.status === "parsing" || source.status === "uploaded"
+        );
+
+        if (hasActiveSources) {
+          return 2000; // Poll every 2 seconds
+        }
+      }
+      return false; // Stop polling when no active sources
+    },
   });
+
+  // Track status changes and show notifications
+  useEffect(() => {
+    const currentData = query.data;
+    const previousData = previousDataRef.current;
+
+    if (previousData && currentData && Array.isArray(currentData)) {
+      currentData.forEach((currentSource) => {
+        const previousSource = previousData.find(
+          (s) => s.id === currentSource.id
+        );
+
+        if (previousSource) {
+          // Status changed from parsing/uploaded to indexed
+          if (
+            (previousSource.status === "parsing" ||
+              previousSource.status === "uploaded") &&
+            currentSource.status === "indexed"
+          ) {
+            const displayName =
+              currentSource.source_type === "html"
+                ? currentSource.original_url ||
+                  currentSource.canonical_url ||
+                  "URL"
+                : currentSource.storage_path.split("/").pop() || "File";
+            success(
+              "Parsing Complete",
+              `"${displayName}" has been successfully parsed and indexed.`
+            );
+          }
+
+          // Status changed to failed
+          if (
+            previousSource.status !== "failed" &&
+            currentSource.status === "failed"
+          ) {
+            const displayName =
+              currentSource.source_type === "html"
+                ? currentSource.original_url ||
+                  currentSource.canonical_url ||
+                  "URL"
+                : currentSource.storage_path.split("/").pop() || "File";
+            showError(
+              "Parsing Failed",
+              currentSource.error_message ||
+                `Failed to parse "${displayName}". Please check the file and try again.`
+            );
+          }
+        }
+      });
+    }
+
+    // Update ref for next comparison
+    if (currentData) {
+      previousDataRef.current = currentData;
+    }
+  }, [query.data, success, showError]);
+
+  return query;
 }
 
 /**

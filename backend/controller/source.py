@@ -4,7 +4,7 @@ Source API Controller
 Handles HTTP requests for source management (file uploads and URL submissions).
 """
 
-from fastapi import APIRouter, Request, HTTPException, status, UploadFile, File, Form
+from fastapi import APIRouter, Request, HTTPException, status, UploadFile, File, Form, BackgroundTasks
 from typing import Optional
 from uuid import UUID
 import logging
@@ -19,6 +19,7 @@ from models.source_model import (
     SourceType,
 )
 from services.source_service import SourceService
+from services.parsing_service import ParsingService
 from middleware.auth_guard import auth_guard
 from core.exceptions import (
     ValidationError,
@@ -132,6 +133,7 @@ def validate_file(file: UploadFile) -> tuple[SourceType, str]:
 async def upload_file_source(
     request: Request,
     bot_id: UUID,
+    background_tasks: BackgroundTasks,
     file: UploadFile = File(...),
 ):
     """
@@ -219,12 +221,23 @@ async def upload_file_source(
             mime_type=mime_type,
         )
         
+        source_id = UUID(source_data["id"])
+        
+        # Trigger parsing in background (non-blocking)
+        # Background task will run after response is sent
+        background_tasks.add_task(
+            _parse_source_background,
+            source_id=source_id,
+            bot_id=bot_id,
+            access_token=access_token
+        )
+        
         response_data = SourceResponseModel(**source_data)
         
         return SourceResponse(
             status="success",
             data=response_data,
-            message="File uploaded successfully",
+            message="File uploaded successfully. Parsing will begin shortly.",
         )
         
     except ValidationError as e:
@@ -498,5 +511,36 @@ async def delete_source(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="An unexpected error occurred",
+        )
+
+
+# Background task function for parsing
+def _parse_source_background(
+    source_id: UUID,
+    bot_id: UUID,
+    access_token: Optional[str] = None
+):
+    """
+    Background task to parse a source document.
+    This runs asynchronously after the upload response is sent.
+    
+    Args:
+        source_id: Source UUID to parse
+        bot_id: Bot UUID
+        access_token: User's JWT token for RLS operations
+    """
+    try:
+        parsing_service = ParsingService(access_token=access_token)
+        success = parsing_service.parse_source(source_id, bot_id)
+        
+        if success:
+            logger.info(f"Background parsing completed successfully for source {source_id}")
+        else:
+            logger.warning(f"Background parsing failed for source {source_id}")
+            
+    except Exception as e:
+        logger.error(
+            f"Error in background parsing task for source {source_id}: {str(e)}",
+            exc_info=True
         )
 
