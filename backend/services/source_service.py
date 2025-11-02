@@ -14,6 +14,7 @@ from core.exceptions import ValidationError, NotFoundError, AuthorizationError, 
 from repositories.source_repo import SourceRepository
 from services.bot_service import BotService
 from models.source_model import SourceType, SourceStatus
+from config.supabasedb import get_supabase_client
 
 logger = logging.getLogger(__name__)
 
@@ -218,7 +219,7 @@ class SourceService:
 
     def delete_source(self, source_id: UUID, bot_id: UUID, user_id: UUID) -> bool:
         """
-        Delete a source.
+        Delete a source and its associated file from storage.
 
         Args:
             source_id: ID of the source to delete
@@ -237,5 +238,38 @@ class SourceService:
         bot_service = BotService()
         bot_service.get_bot(str(bot_id), str(user_id), access_token=self.access_token)
 
+        # Get source details before deletion to get storage path
+        source = self.repository.get_source_by_id(source_id)
+        if not source:
+            raise NotFoundError("Source", str(source_id))
+
+        storage_path = source.get("storage_path")
+        source_type = source.get("source_type")
+
+        # Delete file from storage if it's a file source (not URL)
+        if source_type in (SourceType.PDF.value, SourceType.DOCX.value, SourceType.TEXT.value) and storage_path:
+            try:
+                # Use service role to delete from storage (we've already verified ownership)
+                storage_client = get_supabase_client(use_service_role=True)
+                
+                # Delete file from Supabase Storage
+                # Storage path format: bots/{bot_id}/sources/{source_id}/{filename}
+                # Supabase Storage remove() accepts a list of file paths
+                deleted_files = storage_client.storage.from_("sources").remove([storage_path])
+                
+                if deleted_files:
+                    logger.info(f"Deleted file from storage: {storage_path}")
+                else:
+                    logger.warning(f"Failed to delete file from storage: {storage_path} (file may not exist)")
+                    
+            except Exception as e:
+                # Log error but don't fail the deletion - database row should still be deleted
+                logger.error(f"Error deleting file from storage {storage_path}: {str(e)}")
+                # Continue with database deletion even if storage deletion fails
+        elif source_type == SourceType.HTML.value:
+            # URL sources don't have files in storage, nothing to delete
+            logger.info(f"Skipping storage deletion for URL source {source_id}")
+
+        # Delete the database row
         return self.repository.delete_source(source_id, bot_id)
 
