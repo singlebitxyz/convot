@@ -20,7 +20,7 @@ We'll implement one feature group at a time, building backend APIs first, then t
 -   ✅ Phase 2: Widget Token Management
 -   ✅ Phase 3: Source Management
 -   ✅ Phase 4: Document Parsing & Text Extraction
--   ✅ Phase 5: Text Chunking & Metadata Extraction (Backend)
+-   ✅ Phase 5: Text Chunking & Metadata Extraction (Backend ✅ | Frontend ✅)
 
 **Next Phase**: Phase 6 - Embedding Generation & Vector Storage
 
@@ -336,11 +336,12 @@ We'll implement one feature group at a time, building backend APIs first, then t
 -   [x] Chunk API endpoints (list by source, list by bot, get by ID)
 -   [x] Integration with parsing workflow (automatic chunking after parsing)
 
-#### Frontend (Next.js)
+#### Frontend (Next.js) ✅
 
--   [ ] Chunk preview in source details
--   [ ] Chunk count display
--   [ ] Progress indicator for chunking
+-   [x] Chunk preview dialog (dev-only via `NEXT_PUBLIC_ENABLE_CHUNK_PREVIEW=1`)
+-   [x] Lazy-loading chunks on preview open (no background fetch)
+-   [x] Keep customer UI minimal (status only; no chunk count badge)
+-   [x] Progress indicator already covered in Phase 4 (parsing status UI)
 
 **Dependencies**: Phase 4 (Document Parsing)
 
@@ -359,6 +360,8 @@ We'll implement one feature group at a time, building backend APIs first, then t
 -   Created chunk models, repository, service layer, and API endpoints
 -   Integrated chunking into parsing workflow (automatic after text extraction)
 -   Character range tracking includes overlap regions
+-   Frontend: Added `useChunksBySource` hook with enabled flag for lazy queries
+-   Frontend: Dev-only preview gated by `NODE_ENV !== 'production'` and `NEXT_PUBLIC_ENABLE_CHUNK_PREVIEW=1`
 
 ---
 
