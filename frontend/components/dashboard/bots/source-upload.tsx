@@ -1,7 +1,8 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { Upload, FileText, X, CheckCircle2, AlertCircle } from "lucide-react";
+import { AlertCircle, CheckCircle2, FileText, Upload, X } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -12,9 +13,8 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useUploadFileSource } from "@/lib/query/hooks/sources";
 import { useNotifications } from "@/lib/hooks/use-notifications";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useUploadFileSource } from "@/lib/query/hooks/sources";
 
 interface SourceUploadProps {
   botId: string;
@@ -56,7 +56,10 @@ export default function SourceUpload({ botId }: SourceUploadProps) {
     }
 
     // Check MIME type if available
-    if (file.type && !ALLOWED_FILE_TYPES[file.type as keyof typeof ALLOWED_FILE_TYPES]) {
+    if (
+      file.type &&
+      !ALLOWED_FILE_TYPES[file.type as keyof typeof ALLOWED_FILE_TYPES]
+    ) {
       return `MIME type not allowed: ${file.type}`;
     }
 
@@ -82,18 +85,15 @@ export default function SourceUpload({ botId }: SourceUploadProps) {
     }
   }, []);
 
-  const handleDrop = useCallback(
-    (e: React.DragEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setDragActive(false);
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
 
-      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-        handleFileSelect(e.dataTransfer.files[0]);
-      }
-    },
-    []
-  );
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      handleFileSelect(e.dataTransfer.files[0]);
+    }
+  }, []);
 
   const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -109,7 +109,9 @@ export default function SourceUpload({ botId }: SourceUploadProps) {
       setSelectedFile(null);
       setUploadProgress(0);
       // Reset file input
-      const fileInput = document.getElementById("file-input") as HTMLInputElement;
+      const fileInput = document.getElementById(
+        "file-input"
+      ) as HTMLInputElement;
       if (fileInput) fileInput.value = "";
     } catch (err) {
       // Error handled by mutation hook
@@ -185,12 +187,12 @@ export default function SourceUpload({ botId }: SourceUploadProps) {
             <div className="space-y-4">
               <Upload className="h-12 w-12 mx-auto text-muted-foreground" />
               <div>
-                <Label
+                <label
                   htmlFor="file-input"
-                  className="cursor-pointer text-primary hover:underline"
+                  className="cursor-pointer text-primary hover:underline self-center"
                 >
                   Click to browse
-                </Label>
+                </label>
                 <span className="text-muted-foreground"> or drag and drop</span>
               </div>
               <p className="text-sm text-muted-foreground">
@@ -219,4 +221,3 @@ export default function SourceUpload({ botId }: SourceUploadProps) {
     </Card>
   );
 }
-

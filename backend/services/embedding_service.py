@@ -78,9 +78,7 @@ class EmbeddingService:
         total_updated = 0
         total = len(texts)
         total_batches = (total + self.batch_size - 1) // self.batch_size
-        logger.info(
-            f"Embedding {total} chunks for source {source_id} (batch_size={self.batch_size}, batches={total_batches})"
-        )
+        logger.info(f"Embedding started: source_id={source_id}, chunks={total}, batch_size={self.batch_size}, batches={total_batches}")
 
         for i in range(0, total, self.batch_size):
             batch_num = (i // self.batch_size) + 1
@@ -100,7 +98,5 @@ class EmbeddingService:
                 f"Updated {updated}/{len(batch_ids)} chunk embeddings for batch {batch_num}/{total_batches}"
             )
             total_updated += updated
-        logger.info(
-            f"Embedding complete for source {source_id}: updated {total_updated}/{total} chunks"
-        )
+        logger.info(f"Embedding completed: source_id={source_id}, updated={total_updated}/{total}")
         return total_updated

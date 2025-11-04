@@ -89,13 +89,10 @@ class ChunkService:
         # Store chunks in database
         try:
             created_chunks = self.repository.create_chunks(chunks_data)
-            logger.info(
-                f"Stored {len(created_chunks)} chunks for source {source_id}, "
-                f"bot {bot_id}"
-            )
+            logger.debug(f"Chunks stored: source_id={source_id}, bot_id={bot_id}, count={len(created_chunks)}")
             return created_chunks
         except Exception as e:
-            logger.error(f"Error storing chunks for source {source_id}: {str(e)}")
+            logger.error(f"Chunk storage failed: source_id={source_id}, bot_id={bot_id}, error={str(e)}")
             raise DatabaseError(f"Failed to store chunks: {str(e)}")
 
     def get_chunks_by_source(

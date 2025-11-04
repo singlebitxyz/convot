@@ -20,7 +20,6 @@ class BotRepository:
             if not result.data or len(result.data) == 0:
                 raise DatabaseError("Failed to create bot")
             
-            logger.info(f"Bot created successfully: {result.data[0].get('id')}")
             return result.data[0]
             
         except Exception as e:
@@ -78,7 +77,6 @@ class BotRepository:
             if not result.data or len(result.data) == 0:
                 raise NotFoundError("Bot", bot_id)
 
-            logger.info(f"Bot updated successfully: {bot_id}")
             return result.data[0]
         except NotFoundError:
             raise
@@ -102,7 +100,6 @@ class BotRepository:
             if deleted_count == 0:
                 raise NotFoundError("Bot", bot_id)
 
-            logger.info(f"Bot deleted successfully: {bot_id}")
             return True
         except NotFoundError:
             raise

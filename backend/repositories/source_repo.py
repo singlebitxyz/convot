@@ -47,11 +47,12 @@ class SourceRepository:
             if not response.data:
                 raise DatabaseError("Failed to create source")
 
-            logger.info(f"Created source {response.data[0].get('id')}")
+            source_id = response.data[0].get('id')
+            logger.debug(f"Source created: source_id={source_id}, type={source_data.get('source_type')}, bot_id={source_data.get('bot_id')}")
             return response.data[0]
 
         except Exception as e:
-            logger.error(f"Error creating source: {str(e)}")
+            logger.error(f"Source creation failed: bot_id={source_data.get('bot_id')}, type={source_data.get('source_type')}, error={str(e)}")
             if isinstance(e, DatabaseError):
                 raise
             raise DatabaseError(f"Failed to create source: {str(e)}")
@@ -151,13 +152,13 @@ class SourceRepository:
             if not response.data:
                 raise NotFoundError("Source", str(source_id))
 
-            logger.info(f"Updated source {source_id} status to {status}")
+            logger.debug(f"Source status updated: source_id={source_id}, status={status}")
             return response.data[0]
 
         except NotFoundError:
             raise
         except Exception as e:
-            logger.error(f"Error updating source status: {str(e)}")
+            logger.error(f"Source status update failed: source_id={source_id}, status={status}, error={str(e)}")
             raise DatabaseError(f"Failed to update source status: {str(e)}")
 
     def delete_source(self, source_id: UUID, bot_id: UUID) -> bool:

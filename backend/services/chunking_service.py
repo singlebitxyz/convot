@@ -125,10 +125,8 @@ class ChunkingService:
             text=text
         )
         
-        logger.info(
-            f"Chunked text into {len(chunks)} chunks "
-            f"(avg tokens: {sum(c.metadata.token_count for c in chunks) / len(chunks) if chunks else 0:.0f})"
-        )
+        avg_tokens = sum(c.metadata.token_count for c in chunks) / len(chunks) if chunks else 0
+        logger.info(f"Text chunked: chunks={len(chunks)}, avg_tokens={avg_tokens:.0f}")
         
         return chunks
     

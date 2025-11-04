@@ -29,7 +29,7 @@ class RagService:
         # Embed query (single-vector batch)
         vectors, provider = self.embedding._embed_with_fallback([query_text])
         query_vec = vectors[0]
-        logger.info(f"Query embedded using provider {provider}")
+        logger.debug(f"Query embedded: bot_id={bot_id}, provider={provider}")
 
         # Call SQL function search_similar_chunks(bot_id, embedding, threshold, limit)
         try:
@@ -45,10 +45,10 @@ class RagService:
             ).execute()
 
             data = response.data or []
-            logger.info(f"Retrieved {len(data)} chunks for query")
+            logger.debug(f"Chunks retrieved: bot_id={bot_id}, count={len(data)}, top_k={top_k}, min_score={min_score}")
             return data
         except Exception as e:
-            logger.error(f"Error during retrieval: {str(e)}")
+            logger.error(f"Retrieval failed: bot_id={bot_id}, error={str(e)}")
             raise DatabaseError(f"Retrieval failed: {str(e)}")
 
     def answer(self, bot_id: UUID, user_id: Optional[str], query_text: str, top_k: int = 5, min_score: float = 0.25, session_id: Optional[str] = None, page_url: Optional[str] = None, include_metadata: bool = False) -> Dict[str, Any]:

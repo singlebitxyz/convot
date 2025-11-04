@@ -50,11 +50,12 @@ class ChunkRepository:
             if not response.data:
                 raise DatabaseError("Failed to create chunks")
 
-            logger.info(f"Created {len(response.data)} chunks")
+            logger.debug(f"Chunks created: count={len(response.data)}, source_id={chunks_data[0].get('source_id') if chunks_data else 'unknown'}")
             return response.data
 
         except Exception as e:
-            logger.error(f"Error creating chunks: {str(e)}")
+            source_id = chunks_data[0].get('source_id') if chunks_data else 'unknown'
+            logger.error(f"Chunk creation failed: source_id={source_id}, count={len(chunks_data)}, error={str(e)}")
             raise DatabaseError(f"Failed to create chunks: {str(e)}")
 
     def get_chunks_by_source(self, source_id: UUID) -> List[dict]:

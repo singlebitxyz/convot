@@ -101,9 +101,6 @@ def get_supabase_client(access_token: Optional[str] = None, use_service_role: bo
         # Create client with anon key
         client = create_client(url, anon_key)
         
-        # Log token presence (first 20 chars for debugging, not full token)
-        logger.info(f"Setting RLS token for client (token prefix: {access_token[:20] if len(access_token) > 20 else access_token}...)")
-        
         # Set the user's access token for RLS
         # The Supabase Python client uses postgrest for database queries
         # We need to set the Authorization header on each request
@@ -154,9 +151,6 @@ def get_supabase_client(access_token: Optional[str] = None, use_service_role: bo
                     "Authorization": f"Bearer {access_token}",
                     "apikey": anon_key
                 })
-            
-            # Log which method worked
-            logger.info(f"Postgrest headers set - session={hasattr(client.postgrest, 'session')}, headers={hasattr(client.postgrest, 'headers')}, _headers={hasattr(client.postgrest, '_headers')}")
         
         return client
     except Exception as e:

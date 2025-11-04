@@ -87,7 +87,7 @@ class ParsingService:
                 source_id=source_id,
                 status=SourceStatus.PARSING.value
             )
-            logger.info(f"Started parsing source {source_id}")
+            logger.info(f"Parsing started: source_id={source_id}, bot_id={bot_id}")
             
             # Get source metadata
             source = self.source_repo.get_source_by_id(source_id)
@@ -103,17 +103,12 @@ class ParsingService:
                 if not storage_path:
                     raise ValueError(f"Storage path missing for source {source_id}")
                 
-                logger.info(
-                    f"Starting parsing for source {source_id}:\n"
-                    f"  - Type: {source_type}\n"
-                    f"  - Storage path: {storage_path}\n"
-                    f"  - MIME type: {mime_type}"
-                )
+                logger.debug(f"Parsing file: source_id={source_id}, type={source_type}, mime_type={mime_type}, path={storage_path}")
                 
                 # Download file from storage
                 file_content = self._download_file(storage_path)
                 file_size = len(file_content)
-                logger.info(f"Downloaded file from storage: {file_size:,} bytes")
+                logger.debug(f"File downloaded: source_id={source_id}, size_bytes={file_size}")
                 
                 # Get file extension from storage path
                 file_extension = self._get_file_extension(storage_path)
@@ -126,7 +121,7 @@ class ParsingService:
                         f"MIME type: {mime_type}"
                     )
                 
-                logger.info(f"Using parser: {parser.get_name()}")
+                logger.debug(f"Parser selected: source_id={source_id}, parser={parser.get_name()}")
                 
                 # Parse document
                 result: ParseResult = parser.parse(file_content, storage_path)
@@ -138,7 +133,7 @@ class ParsingService:
                         status=SourceStatus.FAILED.value,
                         error_message=result.error_message
                     )
-                    logger.error(f"Parsing failed for source {source_id}: {result.error_message}")
+                    logger.error(f"Parsing failed: source_id={source_id}, error={result.error_message}")
                     return False
                 
                 # Store extracted text (for now, we'll just log it)
@@ -164,20 +159,14 @@ class ParsingService:
                 
                 metadata_str = ", ".join(metadata_summary) if metadata_summary else "no metadata"
                 
-                logger.info(
-                    f"Successfully parsed source {source_id}:\n"
-                    f"  - Extracted {text_length:,} characters\n"
-                    f"  - Metadata: {metadata_str}\n"
-                    f"  - Text preview (first 500 chars):\n"
-                    f"    {text_preview}{text_preview_suffix}"
-                )
+                logger.info(f"Parsing completed: source_id={source_id}, chars={text_length}, metadata={metadata_str}")
                 
                 # Log full text if it's relatively small (for debugging)
                 if text_length <= 5000:
                     logger.debug(f"Full extracted text for source {source_id}:\n{extracted_text}")
                 
                 # Chunk the extracted text and store in database
-                logger.info(f"Starting chunking for source {source_id}")
+                logger.debug(f"Chunking started: source_id={source_id}")
                 try:
                     created_chunks = self.chunk_service.chunk_and_store_source(
                         source_id=source_id,
@@ -186,15 +175,10 @@ class ParsingService:
                         source_type=SourceType(source_type)
                     )
                     
-                    logger.info(
-                        f"Successfully chunked source {source_id} into {len(created_chunks)} chunks"
-                    )
+                    logger.info(f"Chunking completed: source_id={source_id}, chunks={len(created_chunks)}")
                     
                 except Exception as e:
-                    logger.error(
-                        f"Error chunking source {source_id}: {str(e)}",
-                        exc_info=True
-                    )
+                    logger.error(f"Chunking failed: source_id={source_id}, error={str(e)}", exc_info=True)
                     # Update status to failed if chunking fails
                     self.source_repo.update_source_status(
                         source_id=source_id,
@@ -214,11 +198,9 @@ class ParsingService:
                         texts=chunk_texts,
                         chunk_ids=chunk_ids,
                     )
-                    logger.info(
-                        f"Updated embeddings for {updated}/{len(created_chunks)} chunks of source {source_id}"
-                    )
+                    logger.info(f"Embeddings updated: source_id={source_id}, chunks={updated}/{len(created_chunks)}")
                 except Exception as e:
-                    logger.error(f"Embedding failed for source {source_id}: {str(e)}", exc_info=True)
+                    logger.error(f"Embedding failed: source_id={source_id}, error={str(e)}", exc_info=True)
                     self.source_repo.update_source_status(
                         source_id=source_id,
                         status=SourceStatus.FAILED.value,
@@ -242,7 +224,7 @@ class ParsingService:
                     start_url = source.get("original_url") or source.get("canonical_url")
                     if not start_url:
                         raise ValueError("Source has no URL")
-                    logger.info(f"Starting crawl for URL source {source_id}: {start_url}")
+                    logger.info(f"Crawl started: source_id={source_id}, url={start_url}")
                     crawl_result = crawler.crawl_single(start_url)
                     if not crawl_result.success:
                         self.source_repo.update_source_status(
@@ -250,7 +232,7 @@ class ParsingService:
                             status=SourceStatus.FAILED.value,
                             error_message=f"Crawl failed: {crawl_result.error}"
                         )
-                        logger.error(f"Crawl failed for {source_id}: {crawl_result.error}")
+                        logger.error(f"Crawl failed: source_id={source_id}, error={crawl_result.error}")
                         return False
 
                     # Update source with canonical_url and metadata
@@ -280,12 +262,10 @@ class ParsingService:
 
                     # Log details
                     text_length = len(extracted_text)
-                    logger.info(
-                        f"Crawled URL source {source_id}: {crawl_result.canonical_url} (chars={text_length:,})"
-                    )
+                    logger.info(f"Crawl completed: source_id={source_id}, url={crawl_result.canonical_url}, chars={text_length}")
 
                     # Chunk and embed (reuse same flow as files)
-                    logger.info(f"Starting chunking for URL source {source_id}")
+                    logger.debug(f"Chunking started: source_id={source_id}")
                     created_chunks = self.chunk_service.chunk_and_store_source(
                         source_id=source_id,
                         bot_id=bot_id,
@@ -294,18 +274,14 @@ class ParsingService:
                         default_heading=default_heading
                     )
                     if not created_chunks:
-                        logger.warning(
-                            f"No chunks generated for URL source {source_id} (empty or non-extractive page). Marking indexed."
-                        )
+                        logger.warning(f"No chunks generated: source_id={source_id}, reason=empty_or_non_extractive")
                         self.source_repo.update_source_status(
                             source_id=source_id,
                             status=SourceStatus.INDEXED.value
                         )
                         return True
                     else:
-                        logger.info(
-                            f"Successfully chunked URL source {source_id} into {len(created_chunks)} chunks"
-                        )
+                        logger.info(f"Chunking completed: source_id={source_id}, chunks={len(created_chunks)}")
 
                     # Embeddings
                     from services.embedding_service import EmbeddingService
@@ -317,9 +293,7 @@ class ParsingService:
                         texts=chunk_texts,
                         chunk_ids=chunk_ids,
                     )
-                    logger.info(
-                        f"Updated embeddings for {updated}/{len(created_chunks)} chunks of URL source {source_id}"
-                    )
+                    logger.info(f"Embeddings updated: source_id={source_id}, chunks={updated}/{len(created_chunks)}")
 
                     # Mark indexed
                     self.source_repo.update_source_status(
@@ -328,8 +302,8 @@ class ParsingService:
                     )
                     return True
                 except Exception as e:
-                    error_msg = f"Error crawling URL source {source_id}: {str(e)}"
-                    logger.error(error_msg, exc_info=True)
+                    error_msg = f"Crawl error: {str(e)}"
+                    logger.error(f"Crawl error: source_id={source_id}, error={str(e)}", exc_info=True)
                     self.source_repo.update_source_status(
                         source_id=source_id,
                         status=SourceStatus.FAILED.value,
@@ -342,7 +316,7 @@ class ParsingService:
                 
         except Exception as e:
             error_msg = f"Error parsing source {source_id}: {str(e)}"
-            logger.error(error_msg, exc_info=True)
+            logger.error(f"Parsing error: source_id={source_id}, bot_id={bot_id}, error={str(e)}", exc_info=True)
             
             # Update status to failed
             try:
@@ -352,7 +326,7 @@ class ParsingService:
                     error_message=error_msg
                 )
             except Exception as update_error:
-                logger.error(f"Failed to update source status: {str(update_error)}")
+                logger.error(f"Status update failed: source_id={source_id}, error={str(update_error)}")
             
             return False
     
@@ -381,7 +355,7 @@ class ParsingService:
             return response
             
         except Exception as e:
-            logger.error(f"Error downloading file {storage_path}: {str(e)}")
+            logger.error(f"File download failed: path={storage_path}, error={str(e)}")
             raise ValueError(f"Failed to download file: {str(e)}")
     
     def _get_file_extension(self, file_path: str) -> Optional[str]:

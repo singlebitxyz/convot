@@ -78,13 +78,11 @@ def get_access_token_from_request(request: Request):
         token_data = json.loads(decoded_data)
         
         access_token = token_data.get("access_token")
-        if access_token:
-            logger.info(f"Access token extracted successfully (length: {len(access_token)})")
-        else:
+        if not access_token:
             logger.warning("Access token not found in cookie data")
         return access_token
     except Exception as e:
-        logger.error(f"Failed to extract access token from cookie: {str(e)}")
+        logger.error(f"Token extraction failed: error={str(e)}")
         return None
 
 
@@ -550,13 +548,10 @@ def _parse_source_background(
         success = parsing_service.parse_source(source_id, bot_id)
         
         if success:
-            logger.info(f"Background parsing completed successfully for source {source_id}")
+            logger.info(f"Background parsing completed: source_id={source_id}, bot_id={bot_id}")
         else:
-            logger.warning(f"Background parsing failed for source {source_id}")
+            logger.warning(f"Background parsing failed: source_id={source_id}, bot_id={bot_id}")
             
     except Exception as e:
-        logger.error(
-            f"Error in background parsing task for source {source_id}: {str(e)}",
-            exc_info=True
-        )
+        logger.error(f"Background parsing error: source_id={source_id}, bot_id={bot_id}, error={str(e)}", exc_info=True)
 

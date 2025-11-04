@@ -36,10 +36,10 @@ class BotService:
             }
 
             result = repository.create_bot(bot_data)
-            logger.info(f"Bot service: Bot created for user {user_id}")
+            logger.info(f"Bot created: id={result.get('id')}, user_id={user_id}, name={bot.name}")
             return result
         except Exception as e:
-            logger.error(f"Bot service: Bot creation failed for user {user_id}: {str(e)}")
+            logger.error(f"Bot creation failed: user_id={user_id}, name={bot.name}, error={str(e)}")
             raise
 
     def get_bot(self, bot_id: str, user_id: str, access_token: Optional[str] = None) -> Dict[str, Any]:
@@ -53,14 +53,15 @@ class BotService:
 
             # Check ownership
             if bot.get("created_by") != user_id:
+                logger.warning(f"Bot access denied: bot_id={bot_id}, requested_by={user_id}, owner={bot.get('created_by')}")
                 raise AuthorizationError("You do not have access to this bot")
 
-            logger.info(f"Bot service: Bot retrieved for user {user_id}")
+            logger.debug(f"Bot retrieved: bot_id={bot_id}, user_id={user_id}")
             return bot
         except (NotFoundError, AuthorizationError):
             raise
         except Exception as e:
-            logger.error(f"Bot service: Failed to get bot {bot_id}: {str(e)}")
+            logger.error(f"Bot retrieval failed: bot_id={bot_id}, user_id={user_id}, error={str(e)}")
             raise
 
     def get_user_bots(self, user_id: str, access_token: Optional[str] = None) -> List[Dict[str, Any]]:
@@ -68,10 +69,10 @@ class BotService:
         try:
             repository = self._get_repository(access_token=access_token)
             bots = repository.get_bots_by_user(user_id)
-            logger.info(f"Bot service: Listed {len(bots)} bots for user {user_id}")
+            logger.debug(f"Bots listed: user_id={user_id}, count={len(bots)}")
             return bots
         except Exception as e:
-            logger.error(f"Bot service: Failed to list bots for user {user_id}: {str(e)}")
+            logger.error(f"Bot listing failed: user_id={user_id}, error={str(e)}")
             return []
 
     def update_bot(self, bot_id: str, bot: BotUpdateModel, user_id: str, access_token: Optional[str] = None) -> Dict[str, Any]:
@@ -99,12 +100,12 @@ class BotService:
                     update_data["llm_config"] = existing_config
 
             result = repository.update_bot(bot_id, update_data)
-            logger.info(f"Bot service: Bot updated for user {user_id}")
+            logger.info(f"Bot updated: bot_id={bot_id}, user_id={user_id}, fields={list(update_data.keys())}")
             return result
         except (NotFoundError, AuthorizationError):
             raise
         except Exception as e:
-            logger.error(f"Bot service: Bot update failed for user {user_id}: {str(e)}")
+            logger.error(f"Bot update failed: bot_id={bot_id}, user_id={user_id}, error={str(e)}")
             raise
 
     def delete_bot(self, bot_id: str, user_id: str, access_token: Optional[str] = None) -> bool:
@@ -121,11 +122,11 @@ class BotService:
                 raise AuthorizationError("You do not have permission to delete this bot")
 
             result = repository.delete_bot(bot_id)
-            logger.info(f"Bot service: Bot deleted for user {user_id}")
+            logger.info(f"Bot deleted: bot_id={bot_id}, user_id={user_id}")
             return result
         except (NotFoundError, AuthorizationError):
             raise
         except Exception as e:
-            logger.error(f"Bot service: Bot deletion failed for user {user_id}: {str(e)}")
+            logger.error(f"Bot deletion failed: bot_id={bot_id}, user_id={user_id}, error={str(e)}")
             raise
 

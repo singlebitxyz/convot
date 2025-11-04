@@ -54,13 +54,11 @@ def get_access_token_from_request(request: Request) -> Optional[str]:
         token_data = json.loads(decoded_data)
         
         access_token = token_data.get("access_token")
-        if access_token:
-            logger.info(f"Access token extracted successfully (length: {len(access_token)})")
-        else:
+        if not access_token:
             logger.warning("Access token not found in cookie data")
         return access_token
     except Exception as e:
-        logger.error(f"Failed to extract access token from cookie: {str(e)}")
+        logger.error(f"Token extraction failed: error={str(e)}")
         return None
 
 
