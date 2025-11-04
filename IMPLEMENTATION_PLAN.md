@@ -23,7 +23,7 @@ We'll implement one feature group at a time, building backend APIs first, then t
 -   ✅ Phase 5: Text Chunking & Metadata Extraction (Backend ✅ | Frontend ✅)
 -   ✅ Phase 6: Embedding Generation & Vector Storage (Backend ✅)
 
-**Next Phase**: Phase 6 - Embedding Generation & Vector Storage
+**Next Phase**: Phase 8 - RAG Query Engine
 
 ---
 
@@ -399,40 +399,40 @@ We'll implement one feature group at a time, building backend APIs first, then t
 
 ---
 
-### **Phase 7: URL Crawling & Web Source Processing** 🕷️
+### **Phase 7: URL Crawling & Web Source Processing** 🕷️ — In Progress (Backend: Basic crawling ✅)
 
 **Goal**: Crawl URLs, extract content, and process like files.
 
-#### Backend (FastAPI)
+#### Backend (FastAPI) — Partial ✅
 
--   [ ] URL crawling service:
-    -   HTTP client (requests)
+-   [x] URL crawling (single-page):
+    -   HTTP client (requests) + JS-render fallback (Playwright)
     -   robots.txt respect (robotparser)
     -   HTML parsing (BeautifulSoup)
-    -   Content extraction (readability)
--   [ ] URL normalization
--   [ ] Deduplication (etag, checksum)
--   [ ] Sitemap parsing (optional)
--   [ ] Depth-limited crawling (optional)
--   [ ] Update source status during crawling
+    -   Content extraction (readability-lxml)
+    -   Minimum content threshold + fail if too small
+    -   Title extraction; chunk heading fallback (title → URL-derived)
+-   [x] URL normalization and canonical URL handling
+-   [x] Dedup metadata (etag, last-modified, checksum)
+-   [x] Integrated with chunking + embeddings pipeline
+-   [ ] Sitemap parsing (planned)
+-   [ ] Depth-limited internal crawl with page budget (planned)
 
 #### Frontend (Next.js)
 
--   [ ] URL crawling form
--   [ ] Crawling progress indicator
--   [ ] Crawl depth settings
--   [ ] Sitemap URL option
--   [ ] Extracted page count
+-   [ ] Crawling progress indicator (optional)
+-   [ ] Crawl depth/page budget settings (planned)
+-   [ ] Sitemap URL option (planned)
 
 **Dependencies**: Phase 3 (Source Management), Phase 6 (Embedding)
 
-**Acceptance Criteria**:
+**Acceptance Criteria (Phase 7A - basic)**:
 
--   URLs are crawled and parsed
--   robots.txt is respected
--   Main content is extracted (not boilerplate)
--   Duplicate pages are detected
--   Multiple pages can be crawled (sitemap)
+-   ✅ URLs are crawled and parsed (single page)
+-   ✅ robots.txt is respected
+-   ✅ Main content is extracted (SSR/JS supported via Playwright)
+-   ✅ Chunk headings populated via title/URL fallback
+-   ⏳ Multiple pages via sitemap/internal crawl (Phase 7B)
 
 ---
 
