@@ -43,6 +43,24 @@ class ParsingService:
         self.source_repo = SourceRepository(access_token=access_token)
         self.chunk_service = ChunkService(access_token=access_token)
         self.storage_client = get_supabase_client(use_service_role=True)
+
+    @staticmethod
+    def _derive_title_from_url(url: str) -> str:
+        try:
+            from urllib.parse import urlparse
+            parsed = urlparse(url)
+            path = parsed.path.rstrip('/')
+            if not path or path == "":
+                return parsed.netloc
+            last = path.split('/')[-1]
+            # remove file extensions if any
+            if '.' in last:
+                last = last.split('.')[0]
+            # replace dashes/underscores and title-case
+            title = last.replace('-', ' ').replace('_', ' ').strip()
+            return title.title() if title else parsed.netloc
+        except Exception:
+            return url
     
     def parse_source(self, source_id: UUID, bot_id: UUID) -> bool:
         """
@@ -216,16 +234,108 @@ class ParsingService:
 
                 return True
             
-            # Handle URL sources (HTML) - will be implemented in Phase 5
+            # Handle URL sources (HTML) - Phase 7
             elif source_type == SourceType.HTML.value:
-                # URL sources will be handled by web crawler in later phase
-                logger.info(f"URL source {source_id} parsing deferred to crawler phase")
-                # For now, mark as indexed (will be processed later)
-                self.source_repo.update_source_status(
-                    source_id=source_id,
-                    status=SourceStatus.INDEXED.value
-                )
-                return True
+                try:
+                    from services.crawling.crawler_service import CrawlerService
+                    crawler = CrawlerService(max_depth=1, max_pages=10)
+                    start_url = source.get("original_url") or source.get("canonical_url")
+                    if not start_url:
+                        raise ValueError("Source has no URL")
+                    logger.info(f"Starting crawl for URL source {source_id}: {start_url}")
+                    crawl_result = crawler.crawl_single(start_url)
+                    if not crawl_result.success:
+                        self.source_repo.update_source_status(
+                            source_id=source_id,
+                            status=SourceStatus.FAILED.value,
+                            error_message=f"Crawl failed: {crawl_result.error}"
+                        )
+                        logger.error(f"Crawl failed for {source_id}: {crawl_result.error}")
+                        return False
+
+                    # Update source with canonical_url and metadata
+                    try:
+                        self.source_repo.update_source_status(
+                            source_id=source_id,
+                            status=SourceStatus.PARSING.value,
+                            error_message=None
+                        )
+                    except Exception:
+                        pass
+
+                    # Use extracted text and continue pipeline (chunk + embed)
+                    extracted_text = crawl_result.text
+                    metadata = {
+                        "etag": crawl_result.metadata.get("etag"),
+                        "last_modified": crawl_result.metadata.get("last_modified"),
+                        "page_checksum": crawl_result.metadata.get("page_checksum"),
+                        "canonical_url": crawl_result.canonical_url,
+                        "title": crawl_result.metadata.get("title"),
+                    }
+
+                    # Derive a fallback title from URL if missing
+                    default_heading = metadata.get("title")
+                    if not default_heading and crawl_result.canonical_url:
+                        default_heading = self._derive_title_from_url(crawl_result.canonical_url)
+
+                    # Log details
+                    text_length = len(extracted_text)
+                    logger.info(
+                        f"Crawled URL source {source_id}: {crawl_result.canonical_url} (chars={text_length:,})"
+                    )
+
+                    # Chunk and embed (reuse same flow as files)
+                    logger.info(f"Starting chunking for URL source {source_id}")
+                    created_chunks = self.chunk_service.chunk_and_store_source(
+                        source_id=source_id,
+                        bot_id=bot_id,
+                        text=extracted_text,
+                        source_type=SourceType.HTML,
+                        default_heading=default_heading
+                    )
+                    if not created_chunks:
+                        logger.warning(
+                            f"No chunks generated for URL source {source_id} (empty or non-extractive page). Marking indexed."
+                        )
+                        self.source_repo.update_source_status(
+                            source_id=source_id,
+                            status=SourceStatus.INDEXED.value
+                        )
+                        return True
+                    else:
+                        logger.info(
+                            f"Successfully chunked URL source {source_id} into {len(created_chunks)} chunks"
+                        )
+
+                    # Embeddings
+                    from services.embedding_service import EmbeddingService
+                    chunk_texts = [c.get("excerpt", "") for c in created_chunks]
+                    chunk_ids = [c.get("id") for c in created_chunks]
+                    embedding_service = EmbeddingService(access_token=self.access_token)
+                    updated = embedding_service.embed_chunks_for_source(
+                        source_id=source_id,
+                        texts=chunk_texts,
+                        chunk_ids=chunk_ids,
+                    )
+                    logger.info(
+                        f"Updated embeddings for {updated}/{len(created_chunks)} chunks of URL source {source_id}"
+                    )
+
+                    # Mark indexed
+                    self.source_repo.update_source_status(
+                        source_id=source_id,
+                        status=SourceStatus.INDEXED.value
+                    )
+                    return True
+                except Exception as e:
+                    error_msg = f"Error crawling URL source {source_id}: {str(e)}"
+                    logger.error(error_msg, exc_info=True)
+                    self.source_repo.update_source_status(
+                        source_id=source_id,
+                        status=SourceStatus.FAILED.value,
+                        error_message=error_msg
+                    )
+                    return False
             
             else:
                 raise ValueError(f"Unsupported source type: {source_type}")

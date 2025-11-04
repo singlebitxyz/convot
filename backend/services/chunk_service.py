@@ -37,7 +37,8 @@ class ChunkService:
         source_id: UUID,
         bot_id: UUID,
         text: str,
-        source_type: SourceType
+        source_type: SourceType,
+        default_heading: Optional[str] = None
     ) -> List[dict]:
         """
         Chunk text and store chunks in database.
@@ -76,6 +77,9 @@ class ChunkService:
         chunks_data = []
         for text_chunk in text_chunks:
             chunk_dict = text_chunk.to_dict()
+            # Apply default heading if not present
+            if default_heading and not chunk_dict.get("heading"):
+                chunk_dict["heading"] = default_heading
             chunk_dict.update({
                 "source_id": str(source_id),
                 "bot_id": str(bot_id),

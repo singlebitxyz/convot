@@ -42,6 +42,12 @@ class Settings(BaseSettings):
     gemini_api_key: Optional[str] = Field(default=None, env="GEMINI_API_KEY")
     # Embedding batching
     embedding_batch_size: int = Field(default=64, env="EMBEDDING_BATCH_SIZE")
+
+    # Crawler settings
+    crawler_render_js: bool = Field(default=True, env="CRAWLER_RENDER_JS")
+    crawler_min_content_chars: int = Field(default=500, env="CRAWLER_MIN_CONTENT_CHARS")
+    crawler_max_depth: int = Field(default=1, env="CRAWLER_MAX_DEPTH")
+    crawler_max_pages: int = Field(default=10, env="CRAWLER_MAX_PAGES")
     
     class Config:
         env_file = ".env"

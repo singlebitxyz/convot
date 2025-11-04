@@ -272,6 +272,7 @@ async def create_url_source(
     request: Request,
     bot_id: UUID,
     source_data: SourceCreateModel,
+    background_tasks: BackgroundTasks,
 ):
     """
     Submit a URL as a source.
@@ -305,12 +306,20 @@ async def create_url_source(
             url=source_data.original_url,
         )
         
+        # Trigger parsing in background (non-blocking) for URL crawl + chunk + embed
+        background_tasks.add_task(
+            _parse_source_background,
+            source_id=UUID(source_result["id"]),
+            bot_id=bot_id,
+            access_token=access_token,
+        )
+
         response_data = SourceResponseModel(**source_result)
-        
+
         return SourceResponse(
             status="success",
             data=response_data,
-            message="URL source created successfully",
+            message="URL submitted. Crawling and indexing will begin shortly.",
         )
         
     except ValidationError as e:
