@@ -1,34 +1,38 @@
 "use client";
 
+import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { ArrowLeft, Settings } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useBot } from "@/lib/query/hooks/bots";
+import { ArrowLeft, Bot as BotIcon } from "lucide-react";
 import BotAnalytics from "@/components/dashboard/bots/bot-analytics";
+import BotSettingsForm from "@/components/dashboard/bots/bot-settings-form";
+import BotSourcesManagement from "@/components/dashboard/bots/bot-sources-management";
+import BotTestChat from "@/components/dashboard/bots/bot-test-chat";
+import BotTrainMode from "@/components/dashboard/bots/bot-train-mode";
+import BotWidgetManagement from "@/components/dashboard/bots/bot-widget-management";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useBot } from "@/lib/query/hooks/bots";
 
-export default function BotSummaryPage() {
+export default function BotDetailPage() {
   const params = useParams();
   const router = useRouter();
   const botId = params.id as string;
   const { data: bot, isLoading, error } = useBot(botId);
+  const [activeTab, setActiveTab] = useState("settings");
 
   if (isLoading) {
     return (
       <div className="space-y-6 p-6">
-        <Skeleton className="h-10 w-64" />
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {[1, 2, 3, 4].map((i) => (
-            <Card key={i}>
-              <CardHeader>
-                <Skeleton className="h-4 w-24" />
-                <Skeleton className="h-8 w-32 mt-2" />
-              </CardHeader>
-            </Card>
-          ))}
-        </div>
+        <Skeleton className="h-10 w-48" />
         <Skeleton className="h-96 w-full" />
       </div>
     );
@@ -63,92 +67,84 @@ export default function BotSummaryPage() {
   return (
     <div className="space-y-6 p-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => router.push("/dashboard/bots")}
-            className="h-9 w-9"
-          >
-            <ArrowLeft className="h-4 w-4" />
-          </Button>
+      <div className="flex items-center gap-4">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => router.push("/dashboard/bots")}
+        >
+          <ArrowLeft className="h-5 w-5" />
+        </Button>
+        <div className="flex items-center gap-3">
+          <div className="flex aspect-square size-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+            <BotIcon className="size-5" />
+          </div>
           <div>
-            <h1 className="text-3xl font-bold">{bot.name}</h1>
-            <p className="text-muted-foreground">
+            <h1 className="text-2xl font-bold">{bot.name}</h1>
+            <p className="text-sm text-muted-foreground">
               {bot.description || "No description"}
             </p>
           </div>
         </div>
-        <Button
-          onClick={() => router.push(`/dashboard/bots/${bot.id}/settings`)}
-          size="lg"
-          className="gap-2"
-        >
-          <Settings className="h-4 w-4" />
-          Settings
-        </Button>
       </div>
 
-      {/* Analytics Dashboard */}
-      <BotAnalytics botId={bot.id} />
+      {/* Tabs */}
+      <Tabs
+        value={activeTab}
+        onValueChange={setActiveTab}
+        className="space-y-6"
+      >
+        {/* Mobile Dropdown */}
+        <div className="md:hidden">
+          <Select value={activeTab} onValueChange={setActiveTab}>
+            <SelectTrigger className="w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="settings">Settings</SelectItem>
+              <SelectItem value="analytics">Analytics</SelectItem>
+              <SelectItem value="sources">Sources</SelectItem>
+              <SelectItem value="widget">Widget</SelectItem>
+              <SelectItem value="test">Test</SelectItem>
+              <SelectItem value="train">Train</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
 
-      {/* Bot Info Card */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Bot Configuration</CardTitle>
-          <CardDescription>
-            Current bot settings and information
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid gap-4 md:grid-cols-2">
-            <div>
-              <p className="text-sm font-medium text-muted-foreground mb-1">
-                LLM Provider
-              </p>
-              <Badge variant="outline" className="text-sm">
-                {bot.llm_provider}
-              </Badge>
-            </div>
-            <div>
-              <p className="text-sm font-medium text-muted-foreground mb-1">
-                Model
-              </p>
-              <p className="text-sm">
-                {bot.llm_config?.model_name || "gpt-4o"}
-              </p>
-            </div>
-            <div>
-              <p className="text-sm font-medium text-muted-foreground mb-1">
-                Temperature
-              </p>
-              <p className="text-sm">{bot.llm_config?.temperature || 0.7}</p>
-            </div>
-            <div>
-              <p className="text-sm font-medium text-muted-foreground mb-1">
-                Max Tokens
-              </p>
-              <p className="text-sm">{bot.llm_config?.max_tokens || 1000}</p>
-            </div>
-            <div>
-              <p className="text-sm font-medium text-muted-foreground mb-1">
-                Created
-              </p>
-              <p className="text-sm">
-                {new Date(bot.created_at).toLocaleDateString()}
-              </p>
-            </div>
-            <div>
-              <p className="text-sm font-medium text-muted-foreground mb-1">
-                Retention Days
-              </p>
-              <p className="text-sm">{bot.retention_days} days</p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+        {/* Desktop Tabs */}
+        <TabsList className="hidden md:grid w-full grid-cols-6">
+          <TabsTrigger value="settings">Settings</TabsTrigger>
+          <TabsTrigger value="analytics">Analytics</TabsTrigger>
+          <TabsTrigger value="sources">Sources</TabsTrigger>
+          <TabsTrigger value="widget">Widget</TabsTrigger>
+          <TabsTrigger value="test">Test</TabsTrigger>
+          <TabsTrigger value="train">Train</TabsTrigger>
+        </TabsList>
 
+        <TabsContent value="settings" className="space-y-6">
+          <BotSettingsForm bot={bot} />
+        </TabsContent>
+
+        <TabsContent value="analytics" className="space-y-6">
+          <BotAnalytics botId={bot.id} />
+        </TabsContent>
+
+        <TabsContent value="sources" className="space-y-6">
+          <BotSourcesManagement botId={bot.id} />
+        </TabsContent>
+
+        <TabsContent value="widget" className="space-y-6">
+          <BotWidgetManagement botId={bot.id} />
+        </TabsContent>
+
+        <TabsContent value="test" className="space-y-6">
+          <BotTestChat bot={bot} />
+        </TabsContent>
+
+        <TabsContent value="train" className="space-y-6">
+          <BotTrainMode bot={bot} />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

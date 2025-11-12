@@ -82,8 +82,8 @@ export default function BotCreateDialog({
           },
           retention_days: 90,
         });
-        // Navigate to the new bot's settings page
-        router.push(`/dashboard/bots/${newBot.id}/settings`);
+        // Navigate to the new bot's page
+        router.push(`/dashboard/bots/${newBot.id}`);
       },
       onError: (error: unknown) => {
         showError("Create Failed", "Failed to create bot. Please try again.");

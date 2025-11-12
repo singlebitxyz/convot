@@ -269,7 +269,7 @@ export default function BotsPage() {
                 router.push(`/dashboard/bots/${bot.id}`);
               }}
               onEdit={() => {
-                router.push(`/dashboard/bots/${bot.id}/settings`);
+                router.push(`/dashboard/bots/${bot.id}`);
               }}
               onDelete={() => handleDeleteClick(bot)}
             />
