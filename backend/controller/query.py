@@ -38,6 +38,16 @@ class QueryRequest(BaseModel):
     include_metadata: Optional[bool] = Field(default=False, description="Include confidence and detailed source info (for testing/debugging)")
 
 
+class SandboxQueryRequest(BaseModel):
+    """Model for sandbox query request (with custom prompt)"""
+    query_text: str = Field(..., min_length=1)
+    custom_prompt: str = Field(..., min_length=1, description="Custom system prompt to test")
+    top_k: Optional[int] = Field(default=5, ge=1, le=20)
+    min_score: Optional[float] = Field(default=0.25, ge=0.0, le=1.0)
+    chat_history: Optional[List[ChatMessage]] = Field(default=None, description="Previous chat messages (last 5 messages)")
+    include_metadata: Optional[bool] = Field(default=True, description="Include confidence and detailed source info for testing")
+
+
 @query_router.post("/bots/{bot_id}/query")
 @auth_guard
 async def query_bot(request: Request, bot_id: UUID, body: QueryRequest):
@@ -181,6 +191,84 @@ async def query_bot_widget(request: Request, body: QueryRequest):
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
     except Exception as e:
         logger.error(f"Unexpected error in widget query: {str(e)}", exc_info=True)
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Unexpected error")
+
+
+@query_router.post("/bots/{bot_id}/query/sandbox")
+@auth_guard
+async def query_bot_sandbox(request: Request, bot_id: UUID, body: SandboxQueryRequest):
+    """
+    Sandbox query endpoint for testing custom prompts without saving.
+    Uses the provided custom_prompt instead of the bot's current prompt.
+    """
+    try:
+        access_token = None
+        try:
+            from controller.source import get_access_token_from_request
+            access_token = get_access_token_from_request(request)
+        except Exception:
+            pass
+
+        user_data = request.state.user
+        user_id = getattr(user_data, 'id', None)
+        if not user_id:
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User ID not found in token")
+
+        # Verify user owns the bot
+        from services.bot_service import BotService
+        bot_service = BotService()
+        bot = bot_service.get_bot(str(bot_id), str(user_id), access_token=access_token)
+
+        rag = RagService(access_token=access_token)
+
+        # Convert chat history to format expected by RAG service
+        chat_history = None
+        if body.chat_history:
+            history_pairs = []
+            i = 0
+            while i < len(body.chat_history):
+                if body.chat_history[i].isUser:
+                    query = body.chat_history[i].text
+                    if i + 1 < len(body.chat_history) and not body.chat_history[i + 1].isUser:
+                        response = body.chat_history[i + 1].text
+                        history_pairs.append({"query": query, "response": response})
+                        i += 2
+                    else:
+                        i += 1
+                else:
+                    i += 1
+
+            chat_history = history_pairs[-5:] if len(history_pairs) > 5 else history_pairs
+
+        # Use custom prompt for sandbox testing
+        result = await run_in_threadpool(
+            rag.answer,
+            bot_id,
+            str(user_id),
+            body.query_text,
+            body.top_k or 5,
+            body.min_score or 0.25,
+            None,  # No session_id for sandbox queries (not logged)
+            None,  # No page_url for sandbox queries
+            body.include_metadata or True,  # Default to True for sandbox testing
+            chat_history,
+            body.custom_prompt,  # Custom prompt for testing
+        )
+
+        return {
+            "status": "success",
+            "data": result,
+            "message": "Sandbox query completed (prompt not saved)",
+        }
+
+    except ValidationError as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+    except AuthorizationError as e:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(e))
+    except DatabaseError as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
+    except Exception as e:
+        logger.error(f"Unexpected error in sandbox query: {str(e)}")
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Unexpected error")
 
 

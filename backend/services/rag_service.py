@@ -61,7 +61,7 @@ class RagService:
             logger.error(f"Retrieval failed: bot_id={bot_id}, error={str(e)}")
             raise DatabaseError(f"Retrieval failed: {str(e)}")
 
-    def answer(self, bot_id: UUID, user_id: Optional[str], query_text: str, top_k: int = 5, min_score: float = 0.25, session_id: Optional[str] = None, page_url: Optional[str] = None, include_metadata: bool = False, chat_history: Optional[List[Dict[str, str]]] = None) -> Dict[str, Any]:
+    def answer(self, bot_id: UUID, user_id: Optional[str], query_text: str, top_k: int = 5, min_score: float = 0.25, session_id: Optional[str] = None, page_url: Optional[str] = None, include_metadata: bool = False, chat_history: Optional[List[Dict[str, str]]] = None, custom_prompt: Optional[str] = None) -> Dict[str, Any]:
         # Retrieve context
         t0 = time.time()
         chunks = self.retrieve(bot_id, query_text, top_k=top_k, min_score=min_score)
@@ -156,8 +156,12 @@ class RagService:
             except Exception as e:
                 logger.warning(f"Failed to fetch bot for widget query: {e}")
         
-        system_prompt = (bot or {}).get("system_prompt") if isinstance(bot, dict) else None
-        system_prompt = system_prompt or "You are a helpful assistant. Use the provided context to answer. If unsure, say you don't know."
+        # Use custom prompt if provided (for sandbox testing), otherwise use bot's prompt
+        if custom_prompt:
+            system_prompt = custom_prompt
+        else:
+            system_prompt = (bot or {}).get("system_prompt") if isinstance(bot, dict) else None
+            system_prompt = system_prompt or "You are a helpful assistant. Use the provided context to answer. If unsure, say you don't know."
 
         # Build chat history string from provided chat_history or fetch from DB
         chat_history_str = ""

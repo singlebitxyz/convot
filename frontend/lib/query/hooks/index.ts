@@ -7,3 +7,4 @@ export * from "./sources";
 export * from "./chunks";
 export * from "./query";
 export * from "./analytics";
+export * from "./prompt-updates";

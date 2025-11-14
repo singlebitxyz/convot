@@ -14,7 +14,7 @@ We'll implement one feature group at a time, building backend APIs first, then t
 
 ## 📋 Implementation Status Summary
 
-**Completed Phases**: 10/14
+**Completed Phases**: 11/14
 
 -   ✅ Phase 1: Foundation & Bot Management
 -   ✅ Phase 2: Widget Token Management
@@ -26,8 +26,9 @@ We'll implement one feature group at a time, building backend APIs first, then t
 -   ✅ Phase 8: RAG Query Engine (Backend ✅ | Frontend ✅)
 -   ✅ Phase 9: Chat Widget (Embeddable) (Backend ✅ | Widget ✅)
 -   ✅ Phase 10: Analytics Dashboard (Backend ✅ | Frontend ✅)
+-   ✅ Phase 11: System Prompt Training (Backend ✅ | Frontend ✅)
 
-**Next Phase**: Phase 11 - System Prompt Training
+**Next Phase**: Phase 12 - Rate Limiting
 
 ---
 
@@ -667,33 +668,54 @@ We'll implement one feature group at a time, building backend APIs first, then t
 
 **Goal**: Edit system prompts, test changes, and maintain history.
 
-#### Backend (FastAPI)
+**Status**: ✅ **COMPLETE** (Backend ✅ | Frontend ✅)
 
--   [ ] Prompt update service
--   [ ] Prompt history tracking
--   [ ] Prompt endpoints:
+#### Backend (FastAPI) ✅
+
+-   [x] Prompt update service
+-   [x] Prompt history tracking
+-   [x] Prompt endpoints:
     -   `POST /api/v1/bots/:id/prompt-updates` - Create prompt update
     -   `GET /api/v1/bots/:id/prompt-updates` - List prompt history
     -   `PATCH /api/v1/bots/:id/prompt` - Apply prompt update
--   [ ] Sandbox query endpoint (test prompt without saving)
+    -   `POST /api/v1/bots/:id/prompt/revert` - Revert to previous prompt
+-   [x] Sandbox query endpoint (`POST /api/v1/bots/:id/query/sandbox` - test prompt without saving)
 
-#### Frontend (Next.js)
+#### Frontend (Next.js) ✅
 
--   [ ] Prompt editor component
--   [ ] Prompt history timeline
--   [ ] Test prompt interface (sandbox chat)
--   [ ] Apply/revert prompt updates
--   [ ] Prompt suggestions from analytics
+-   [x] Prompt editor component
+-   [x] Prompt history timeline
+-   [x] Test prompt interface (sandbox chat)
+-   [x] Apply/revert prompt updates
+-   [x] Auto-apply option for prompt updates
 
 **Dependencies**: Phase 1 (Bot Management), Phase 8 (RAG Query Engine)
 
+**Backend Completion Notes** (✅ Done):
+
+-   Created `PromptUpdateRepository` for database operations
+-   Created `PromptUpdateService` for business logic with authorization checks
+-   Implemented all CRUD endpoints for prompt updates
+-   Added sandbox query endpoint that accepts custom prompts
+-   Modified `RagService` to support custom prompts for testing
+-   Comprehensive error handling and validation
+
+**Frontend Completion Notes** (✅ Done):
+
+-   Created comprehensive train mode component with three tabs (Editor, History, Sandbox)
+-   Implemented prompt editor with change preview and auto-apply option
+-   Built history timeline showing all prompt updates with apply/revert actions
+-   Created sandbox chat interface for testing custom prompts without saving
+-   Integrated React Query hooks for all prompt update operations
+-   Real-time updates with proper cache invalidation
+
 **Acceptance Criteria**:
 
--   Users can edit system prompts
--   Prompt changes are saved to history
--   Users can test prompts in sandbox
--   Users can apply or revert prompt updates
--   Prompt history is visible
+-   ✅ Users can edit system prompts
+-   ✅ Prompt changes are saved to history
+-   ✅ Users can test prompts in sandbox
+-   ✅ Users can apply or revert prompt updates
+-   ✅ Prompt history is visible
 
 ---
 
