@@ -22,6 +22,7 @@ from services.source_service import SourceService
 from starlette.concurrency import run_in_threadpool
 from services.parsing_service import ParsingService
 from middleware.auth_guard import auth_guard
+from middleware.auth import get_access_token_from_request
 from core.exceptions import (
     ValidationError,
     NotFoundError,
@@ -48,42 +49,6 @@ ALLOWED_EXTENSIONS = {
 }
 
 MAX_FILE_SIZE = 50 * 1024 * 1024  # 50MB
-
-
-def get_access_token_from_request(request: Request):
-    """Extract access token from request cookies"""
-    try:
-        import base64
-        import json
-        
-        supabase_cookie = None
-        for cookie_name, cookie_value in request.cookies.items():
-            if cookie_name.startswith("sb-") and cookie_name.endswith("-auth-token"):
-                supabase_cookie = cookie_value
-                break
-        
-        if not supabase_cookie:
-            return None
-        
-        if supabase_cookie.startswith('base64-'):
-            encoded_data = supabase_cookie[7:]
-        else:
-            encoded_data = supabase_cookie
-        
-        missing_padding = len(encoded_data) % 4
-        if missing_padding:
-            encoded_data += '=' * (4 - missing_padding)
-        
-        decoded_data = base64.b64decode(encoded_data).decode('utf-8')
-        token_data = json.loads(decoded_data)
-        
-        access_token = token_data.get("access_token")
-        if not access_token:
-            logger.warning("Access token not found in cookie data")
-        return access_token
-    except Exception as e:
-        logger.error(f"Token extraction failed: error={str(e)}")
-        return None
 
 
 def validate_file(file: UploadFile) -> tuple[SourceType, str]:

@@ -8,8 +8,6 @@ from fastapi import APIRouter, Request, HTTPException, status
 from typing import Optional
 from uuid import UUID
 import logging
-import base64
-import json
 
 from models.chunk_model import (
     ChunkResponseModel,
@@ -18,6 +16,7 @@ from models.chunk_model import (
 )
 from services.chunk_service import ChunkService
 from middleware.auth_guard import auth_guard
+from middleware.auth import get_access_token_from_request
 from starlette.concurrency import run_in_threadpool
 from core.exceptions import (
     ValidationError,
@@ -29,37 +28,6 @@ from core.exceptions import (
 logger = logging.getLogger(__name__)
 
 chunk_router = APIRouter()
-
-
-def get_access_token_from_request(request: Request) -> Optional[str]:
-    """Extract access token from request cookies"""
-    try:
-        supabase_cookie = None
-        for cookie_name, cookie_value in request.cookies.items():
-            if cookie_name.startswith("sb-") and cookie_name.endswith("-auth-token"):
-                supabase_cookie = cookie_value
-                break
-        
-        if not supabase_cookie:
-            return None
-        
-        if supabase_cookie.startswith('base64-'):
-            encoded_data = supabase_cookie[7:]
-        else:
-            encoded_data = supabase_cookie
-        
-        missing_padding = len(encoded_data) % 4
-        if missing_padding:
-            encoded_data += '=' * (4 - missing_padding)
-        
-        decoded_data = base64.b64decode(encoded_data).decode('utf-8')
-        token_data = json.loads(decoded_data)
-        
-        access_token = token_data.get("access_token")
-        return access_token
-    except Exception as e:
-        logger.error(f"Failed to extract access token from cookie: {str(e)}")
-        return None
 
 
 @chunk_router.get("/bots/{bot_id}/sources/{source_id}/chunks")

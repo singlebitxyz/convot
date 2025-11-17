@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Request, HTTPException, status
-from typing import Dict, Any, Optional
+from typing import Dict, Any
 import logging
 from models.bot_model import (
     BotCreateModel,
@@ -11,6 +11,7 @@ from models.bot_model import (
 from repositories.bot_repo import BotRepository
 from services.bot_service import BotService
 from middleware.auth_guard import auth_guard
+from middleware.auth import get_access_token_from_request
 from core.exceptions import BaseAPIException, NotFoundError, ValidationError, AuthorizationError
 from starlette.concurrency import run_in_threadpool
 
@@ -20,46 +21,6 @@ router = APIRouter()
 
 # Initialize service (repository created per request with access token)
 bot_service = BotService()
-
-
-def get_access_token_from_request(request: Request) -> Optional[str]:
-    """Extract access token from request cookies"""
-    try:
-        import base64
-        import json
-        
-        # Get the Supabase auth token cookie
-        supabase_cookie = None
-        for cookie_name, cookie_value in request.cookies.items():
-            if cookie_name.startswith("sb-") and cookie_name.endswith("-auth-token"):
-                supabase_cookie = cookie_value
-                break
-        
-        if not supabase_cookie:
-            return None
-        
-        # Parse the cookie value to extract the access token
-        if supabase_cookie.startswith('base64-'):
-            encoded_data = supabase_cookie[7:]  # Remove 'base64-' prefix
-        else:
-            encoded_data = supabase_cookie
-        
-        # Add padding to the base64 string if needed
-        missing_padding = len(encoded_data) % 4
-        if missing_padding:
-            encoded_data += '=' * (4 - missing_padding)
-        
-        # Decode the base64-encoded JSON
-        decoded_data = base64.b64decode(encoded_data).decode('utf-8')
-        token_data = json.loads(decoded_data)
-        
-        access_token = token_data.get("access_token")
-        if not access_token:
-            logger.warning("Access token not found in cookie data")
-        return access_token
-    except Exception as e:
-        logger.error(f"Token extraction failed: error={str(e)}")
-        return None
 
 
 @router.post("/bots", response_model=BotResponse, status_code=status.HTTP_201_CREATED)
