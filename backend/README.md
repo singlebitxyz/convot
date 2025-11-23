@@ -154,16 +154,20 @@ See `NEW_FEATURE_GUIDE.md` for detailed instructions on adding features.
 -   [ ] Enable rate limiting
 -   [ ] Configure Supabase RLS policies
 
-### Docker (Optional)
+### Docker (Recommended)
 
-```dockerfile
-FROM python:3.11-slim
-WORKDIR /app
-COPY requirements.txt .
-RUN pip install -r requirements.txt
-COPY . .
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+A `Dockerfile` is provided that includes:
+- System dependencies for Playwright
+- Python packages
+- Playwright browser installation
+
+**Build and run:**
+```bash
+docker build -t gulp-backend .
+docker run -p 8000:8000 gulp-backend
 ```
+
+Works on Railway, Heroku, AWS, GCP, Azure, Fly.io, Render, and any Docker-compatible platform.
 
 ## 📚 Documentation
 
