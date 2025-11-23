@@ -4,7 +4,6 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { extractErrorMessage } from "@/lib/utils/error-extractor";
 import {
   Bot as BotIcon,
   ChevronDown,
@@ -14,6 +13,7 @@ import {
   Send,
   User,
 } from "lucide-react";
+import { useAuth } from "@/components/providers/auth-provider";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -33,6 +33,7 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useQueryBot } from "@/lib/query/hooks";
 import type { Bot } from "@/lib/types/bot";
+import { extractErrorMessage } from "@/lib/utils/error-extractor";
 
 interface Citation {
   chunk_id: string;
@@ -204,6 +205,16 @@ export default function BotTestChat({ bot }: BotTestChatProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // Get current user for session ID
+  const { user } = useAuth();
+
+  // Generate session ID: dashboard_{bot_id}_{user_id}
+  // Simple format ensures each user has their own test session per bot
+  // Security: Prevents cross-user chat history leakage
+  const sessionId = user?.id
+    ? `dashboard_${bot.id}_${user.id}`
+    : `dashboard_${bot.id}_anonymous`;
+
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, []);
@@ -233,7 +244,7 @@ export default function BotTestChat({ bot }: BotTestChatProps) {
           query_text: userMessage.content,
           top_k: 5,
           min_score: 0.25,
-          session_id: "dashboard-test",
+          session_id: sessionId,
           page_url:
             typeof window !== "undefined" ? window.location.href : undefined,
           include_metadata: true, // Enable metadata for testing/debugging
@@ -260,7 +271,7 @@ export default function BotTestChat({ bot }: BotTestChatProps) {
         setIsLoading(false);
       }
     },
-    [input, isLoading, queryMutation]
+    [input, isLoading, queryMutation, sessionId]
   );
 
   const handleKeyDown = useCallback(
@@ -358,11 +369,7 @@ export default function BotTestChat({ bot }: BotTestChatProps) {
                                       className="underline"
                                     />
                                   ),
-                                  code: ({
-                                    className,
-                                    children,
-                                    ...props
-                                  }) => (
+                                  code: ({ className, children, ...props }) => (
                                     <code
                                       className={
                                         "rounded bg-background/50 px-1 py-0.5 text-[0.85em] " +
