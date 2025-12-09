@@ -35,7 +35,7 @@ export default function Stats() {
             ✨ Powered by your own knowledge
           </AnimatedShinyText>
           <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-4">
-            Why organizations choose Gulp
+            Why organizations choose Convot
           </h2>
           <p className="text-base text-foreground/80 max-w-2xl mx-auto">
             Embed intelligent chatbots on your website in minutes. Train them on

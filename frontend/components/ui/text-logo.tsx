@@ -18,13 +18,13 @@ export function TextLogo({
       {showIcon && (
         <Image
           src="/logo/logo-white.svg"
-          alt="Gulp Logo"
+          alt="Convot Logo"
           width={iconSize}
           height={iconSize}
           className="object-contain"
         />
       )}
-      <span className="text-foreground">gulp</span>
+      <span className="text-foreground">Convot</span>
       <span className="text-primary -ml-2">.</span>
     </span>
   );

@@ -1,7 +1,7 @@
 -- =====================================================
--- GULP PRODUCT DATABASE SCHEMA SETUP SCRIPT
+-- CONVOT PRODUCT DATABASE SCHEMA SETUP SCRIPT
 -- =====================================================
--- This script creates all tables required for the Gulp
+-- This script creates all tables required for the Convot
 -- chatbot platform including bots, sources, chunks,
 -- queries, analytics, and widget tokens
 -- =====================================================
@@ -861,7 +861,7 @@ export interface RateLimit {
 -- Verify the setup
 DO $$
 BEGIN
-    RAISE NOTICE 'Gulp database schema setup completed successfully!';
+    RAISE NOTICE 'Convot database schema setup completed successfully!';
     RAISE NOTICE 'Features included:';
     RAISE NOTICE '- 7 core tables (bots, sources, chunks, queries, prompt_updates, widget_tokens, rate_limits)';
     RAISE NOTICE '- pgvector extension for embeddings with HNSW index';

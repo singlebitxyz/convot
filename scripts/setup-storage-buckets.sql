@@ -2,7 +2,7 @@
 -- SUPABASE STORAGE BUCKETS SETUP
 -- =====================================================
 -- This script creates the necessary storage buckets
--- for the Gulp product, including sources bucket for
+-- for the Convot product, including sources bucket for
 -- file uploads (PDF, DOCX, TXT)
 -- =====================================================
 

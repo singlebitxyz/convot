@@ -1,9 +1,9 @@
-# 🧠 GULP (v1.0)
+# 🧠 CONVOT (v1.0)
 
 ### Product summary
 
-**Gulp** lets organizations embed an intelligent chatbot on their website using their own content (PDFs, Word docs, custom text, or URLs).
-Admins upload or link content via a dashboard; Gulp processes it (parse → chunk → embed) and provides a one-line script or API to deploy a chat widget.
+**Convot** lets organizations embed an intelligent chatbot on their website using their own content (PDFs, Word docs, custom text, or URLs).
+Admins upload or link content via a dashboard; Convot processes it (parse → chunk → embed) and provides a one-line script or API to deploy a chat widget.
 End-users can chat with this bot; all interactions are logged for analytics.
 Backend is RAG-based (Retrieval-Augmented Generation).
 

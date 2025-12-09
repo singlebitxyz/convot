@@ -1,8 +1,8 @@
-# 🚀 Gulp Product Implementation Plan
+# 🚀 Convot Product Implementation Plan
 
 ## Overview
 
-This plan breaks down the entire Gulp product into logical feature groups. Each group includes:
+This plan breaks down the entire Convot product into logical feature groups. Each group includes:
 
 -   **Backend APIs** (FastAPI)
 -   **Frontend UI** (Next.js Dashboard)

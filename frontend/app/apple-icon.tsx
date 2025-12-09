@@ -22,7 +22,7 @@ export default function AppleIcon() {
       >
         <img
           src="https://saas.nbarkiya.xyz/logo/logo-white.png"
-          alt="Gulp Logo"
+          alt="Convot Logo"
           style={{
             width: "100%",
             height: "100%",

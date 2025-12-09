@@ -63,7 +63,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg">
                   <Image
                     src="/logo/logo-white.svg"
-                    alt="Gulp Logo"
+                    alt="Convot Logo"
                     width={32}
                     height={32}
                     className="w-full h-full object-contain"

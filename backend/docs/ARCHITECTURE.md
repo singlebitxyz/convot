@@ -2,7 +2,7 @@
 
 ## Overview
 
-Gulp API follows a **Clean Architecture** pattern with **FastAPI** and **Supabase** integration. The system is designed for scalability, security, and maintainability, making it perfect for production-ready applications.
+Convot API follows a **Clean Architecture** pattern with **FastAPI** and **Supabase** integration. The system is designed for scalability, security, and maintainability, making it perfect for production-ready applications.
 
 ## 🏛️ Architecture Pattern
 
@@ -21,7 +21,7 @@ Gulp API follows a **Clean Architecture** pattern with **FastAPI** and **Supabas
 ## 📁 Folder Structure
 
 ```
-gulp/
+convot/
 ├── config/                    # Configuration & Database
 │   ├── __init__.py
 │   ├── settings.py           # Environment configuration
@@ -54,8 +54,8 @@ gulp/
 │   ├── API_QUICK_REFERENCE.md # Quick reference
 │   └── ARCHITECTURE.md      # Architecture guide
 ├── postman/                 # Postman Files
-│   ├── Gulp_API.postman_collection.json    # API collection
-│   └── Gulp_API.postman_environment.json   # Environment variables
+│   ├── Convot_API.postman_collection.json    # API collection
+│   └── Convot_API.postman_environment.json   # Environment variables
 ├── main.py                  # Application entry point
 ├── requirements.txt         # Dependencies
 └── .env                     # Environment variables

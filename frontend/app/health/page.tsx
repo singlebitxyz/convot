@@ -131,7 +131,7 @@ export default function HealthPage() {
     <>
       <PageSEO
         title="System Health Status"
-        description="Monitor Gulp system health, uptime, and performance metrics in real-time."
+        description="Monitor Convot system health, uptime, and performance metrics in real-time."
       />
 
       <div className="container mx-auto p-6 space-y-6 max-w-7xl">

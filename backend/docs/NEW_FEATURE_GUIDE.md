@@ -2,7 +2,7 @@
 
 ## Overview
 
-This guide provides **step-by-step instructions** for AI to build new features in the Gulp API. Follow this pattern to maintain consistency and scalability.
+This guide provides **step-by-step instructions** for AI to build new features in the Convot API. Follow this pattern to maintain consistency and scalability.
 
 ## 🏗️ Architecture Pattern
 

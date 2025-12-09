@@ -1,7 +1,7 @@
 /**
- * Gulp Chat Widget
+ * Convot Chat Widget
  *
- * A modern, embeddable chat widget that connects to the Gulp API.
+ * A modern, embeddable chat widget that connects to the Convot API.
  * Features: Chat history, session management, markdown rendering, dark mode support.
  *
  * Usage:
@@ -25,7 +25,7 @@
 
   // Generate or retrieve session ID
   function getSessionId() {
-    const storageKey = "gulp_widget_session";
+    const storageKey = "convot_widget_session";
     let sessionId = localStorage.getItem(storageKey);
     if (!sessionId) {
       sessionId =
@@ -37,7 +37,7 @@
 
   // Load chat history from localStorage
   function loadChatHistory() {
-    const storageKey = `gulp_widget_messages_${config.sessionId}`;
+    const storageKey = `convot_widget_messages_${config.sessionId}`;
     try {
       const saved = localStorage.getItem(storageKey);
       if (saved) {
@@ -52,7 +52,7 @@
 
   // Save chat history to localStorage
   function saveChatHistory() {
-    const storageKey = `gulp_widget_messages_${config.sessionId}`;
+    const storageKey = `convot_widget_messages_${config.sessionId}`;
     try {
       localStorage.setItem(storageKey, JSON.stringify(config.messages));
     } catch (e) {
@@ -193,15 +193,15 @@
       config.apiUrl = script.getAttribute("data-api-url") || config.apiUrl;
     }
 
-    // Fallback: try to get from window.gulpWidgetConfig
-    if (window.gulpWidgetConfig) {
-      config.token = window.gulpWidgetConfig.token || config.token;
-      config.apiUrl = window.gulpWidgetConfig.apiUrl || config.apiUrl;
+    // Fallback: try to get from window.convotWidgetConfig
+    if (window.convotWidgetConfig) {
+      config.token = window.convotWidgetConfig.token || config.token;
+      config.apiUrl = window.convotWidgetConfig.apiUrl || config.apiUrl;
     }
 
     if (!config.token) {
       console.error(
-        "Gulp Widget: Token is required. Set data-token attribute on script tag."
+        "Convot Widget: Token is required. Set data-token attribute on script tag."
       );
       return false;
     }
@@ -221,30 +221,30 @@
     const colors = getThemeColors(isDark);
 
     // Inject CSS with theme variables
-    const styleId = "gulp-widget-styles";
+    const styleId = "convot-widget-styles";
     if (!document.getElementById(styleId)) {
       const style = document.createElement("style");
       style.id = styleId;
       style.textContent = `
-                #gulp-widget-container * {
+                #convot-widget-container * {
                     box-sizing: border-box;
                 }
                 
-                #gulp-widget-container {
-                    --gulp-bg: ${colors.background};
-                    --gulp-fg: ${colors.foreground};
-                    --gulp-card: ${colors.card};
-                    --gulp-card-fg: ${colors.cardForeground};
-                    --gulp-primary: ${colors.primary};
-                    --gulp-primary-fg: ${colors.primaryForeground};
-                    --gulp-muted: ${colors.muted};
-                    --gulp-muted-fg: ${colors.mutedForeground};
-                    --gulp-border: ${colors.border};
-                    --gulp-input: ${colors.input};
-                    --gulp-radius: ${colors.radius};
+                #convot-widget-container {
+                    --convot-bg: ${colors.background};
+                    --convot-fg: ${colors.foreground};
+                    --convot-card: ${colors.card};
+                    --convot-card-fg: ${colors.cardForeground};
+                    --convot-primary: ${colors.primary};
+                    --convot-primary-fg: ${colors.primaryForeground};
+                    --convot-muted: ${colors.muted};
+                    --convot-muted-fg: ${colors.mutedForeground};
+                    --convot-border: ${colors.border};
+                    --convot-input: ${colors.input};
+                    --convot-radius: ${colors.radius};
                 }
                 
-                #gulp-widget-container {
+                #convot-widget-container {
                     position: fixed;
                     bottom: 20px;
                     right: 20px;
@@ -252,16 +252,16 @@
                     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
                 }
                 
-                #gulp-widget-window {
+                #convot-widget-window {
                     display: none;
                     width: 400px;
                     max-width: calc(100vw - 40px);
                     height: 600px;
                     max-height: calc(100vh - 100px);
-                    background: var(--gulp-card);
-                    color: var(--gulp-card-fg);
-                    border-radius: var(--gulp-radius);
-                    border: 1px solid var(--gulp-border);
+                    background: var(--convot-card);
+                    color: var(--convot-card-fg);
+                    border-radius: var(--convot-radius);
+                    border: 1px solid var(--convot-border);
                     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
                     flex-direction: column;
                     overflow: hidden;
@@ -279,17 +279,17 @@
                     }
                 }
                 
-                #gulp-widget-header {
+                #convot-widget-header {
                     padding: 16px 20px;
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
-                    background: var(--gulp-card);
+                    background: var(--convot-card);
                 }
                 
-                #gulp-widget-header .gulp-header-label {
-                    background: var(--gulp-primary);
-                    color: var(--gulp-primary-fg);
+                #convot-widget-header .convot-header-label {
+                    background: var(--convot-primary);
+                    color: var(--convot-primary-fg);
                     padding: 8px 16px;
                     border-radius: 20px;
                     font-size: 14px;
@@ -297,10 +297,10 @@
                     border: none;
                 }
                 
-                #gulp-widget-close {
-                    background: var(--gulp-muted);
-                    border: 1px solid var(--gulp-border);
-                    color: var(--gulp-fg);
+                #convot-widget-close {
+                    background: var(--convot-muted);
+                    border: 1px solid var(--convot-border);
+                    color: var(--convot-fg);
                     width: 36px;
                     height: 36px;
                     border-radius: 50%;
@@ -312,38 +312,38 @@
                     transition: background 0.2s, border-color 0.2s;
                 }
                 
-                #gulp-widget-close:hover {
-                    background: var(--gulp-primary);
-                    border-color: var(--gulp-primary);
-                    color: var(--gulp-primary-fg);
+                #convot-widget-close:hover {
+                    background: var(--convot-primary);
+                    border-color: var(--convot-primary);
+                    color: var(--convot-primary-fg);
                 }
                 
-                #gulp-widget-messages {
+                #convot-widget-messages {
                     flex: 1;
                     overflow-y: auto;
                     padding: 20px;
-                    background: var(--gulp-bg);
+                    background: var(--convot-bg);
                     scroll-behavior: smooth;
                 }
                 
-                #gulp-widget-messages::-webkit-scrollbar {
+                #convot-widget-messages::-webkit-scrollbar {
                     width: 6px;
                 }
                 
-                #gulp-widget-messages::-webkit-scrollbar-track {
+                #convot-widget-messages::-webkit-scrollbar-track {
                     background: transparent;
                 }
                 
-                #gulp-widget-messages::-webkit-scrollbar-thumb {
-                    background: var(--gulp-border);
+                #convot-widget-messages::-webkit-scrollbar-thumb {
+                    background: var(--convot-border);
                     border-radius: 3px;
                 }
                 
-                #gulp-widget-messages::-webkit-scrollbar-thumb:hover {
-                    background: var(--gulp-muted-fg);
+                #convot-widget-messages::-webkit-scrollbar-thumb:hover {
+                    background: var(--convot-muted-fg);
                 }
                 
-                .gulp-message {
+                .convot-message {
                     margin-bottom: 16px;
                     display: flex;
                     animation: fadeIn 0.3s ease-out;
@@ -360,136 +360,136 @@
                     }
                 }
                 
-                .gulp-message-user {
+                .convot-message-user {
                     justify-content: flex-end;
                 }
                 
-                .gulp-message-assistant {
+                .convot-message-assistant {
                     justify-content: flex-start;
                 }
                 
-                .gulp-message-bubble {
+                .convot-message-bubble {
                     max-width: 80%;
                     padding: 12px 16px;
-                    border-radius: var(--gulp-radius);
+                    border-radius: var(--convot-radius);
                     word-wrap: break-word;
                     font-size: 14px;
                     line-height: 1.6;
                     position: relative;
                 }
                 
-                .gulp-message-user .gulp-message-bubble {
-                    background: var(--gulp-primary);
-                    color: var(--gulp-primary-fg);
+                .convot-message-user .convot-message-bubble {
+                    background: var(--convot-primary);
+                    color: var(--convot-primary-fg);
                     border-bottom-right-radius: 4px;
                 }
                 
-                .gulp-message-assistant .gulp-message-bubble {
-                    background: var(--gulp-muted);
-                    color: var(--gulp-muted-fg);
-                    border: 1px solid var(--gulp-border);
+                .convot-message-assistant .convot-message-bubble {
+                    background: var(--convot-muted);
+                    color: var(--convot-muted-fg);
+                    border: 1px solid var(--convot-border);
                     border-bottom-left-radius: 4px;
                 }
                 
-                .gulp-message-bubble p {
+                .convot-message-bubble p {
                     margin: 0 0 8px 0;
                 }
                 
-                .gulp-message-bubble p:last-child {
+                .convot-message-bubble p:last-child {
                     margin-bottom: 0;
                 }
                 
-                .gulp-message-bubble code {
-                    background: var(--gulp-card);
+                .convot-message-bubble code {
+                    background: var(--convot-card);
                     padding: 2px 6px;
                     border-radius: 4px;
                     font-size: 0.9em;
                     font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
                 }
                 
-                .gulp-message-bubble pre {
-                    background: var(--gulp-card);
+                .convot-message-bubble pre {
+                    background: var(--convot-card);
                     padding: 12px;
-                    border-radius: var(--gulp-radius);
+                    border-radius: var(--convot-radius);
                     overflow-x: auto;
                     margin: 8px 0;
-                    border: 1px solid var(--gulp-border);
+                    border: 1px solid var(--convot-border);
                 }
                 
-                .gulp-message-bubble pre code {
+                .convot-message-bubble pre code {
                     background: transparent;
                     padding: 0;
                 }
                 
-                .gulp-message-bubble ul, .gulp-message-bubble ol {
+                .convot-message-bubble ul, .convot-message-bubble ol {
                     margin: 8px 0;
                     padding-left: 24px;
                 }
                 
-                .gulp-message-bubble li {
+                .convot-message-bubble li {
                     margin: 4px 0;
                 }
                 
-                .gulp-message-bubble a {
-                    color: var(--gulp-primary);
+                .convot-message-bubble a {
+                    color: var(--convot-primary);
                     text-decoration: underline;
                 }
                 
-                .gulp-message-bubble strong {
+                .convot-message-bubble strong {
                     font-weight: 600;
                 }
                 
-                .gulp-message-bubble em {
+                .convot-message-bubble em {
                     font-style: italic;
                 }
                 
-                .gulp-empty-state {
+                .convot-empty-state {
                     text-align: center;
-                    color: var(--gulp-muted-fg);
+                    color: var(--convot-muted-fg);
                     font-size: 14px;
                     padding: 40px 20px;
                 }
                 
-                #gulp-widget-input-area {
-                    border-top: 1px solid var(--gulp-border);
+                #convot-widget-input-area {
+                    border-top: 1px solid var(--convot-border);
                     padding: 16px 16px 12px 16px;
-                    background: var(--gulp-card);
+                    background: var(--convot-card);
                 }
                 
-                #gulp-widget-input-wrapper {
+                #convot-widget-input-wrapper {
                     display: flex;
                     gap: 8px;
                     align-items: flex-end;
                 }
                 
-                #gulp-widget-input {
+                #convot-widget-input {
                     flex: 1;
                     padding: 12px 16px;
-                    border: 1px solid var(--gulp-input);
-                    border-radius: var(--gulp-radius);
+                    border: 1px solid var(--convot-input);
+                    border-radius: var(--convot-radius);
                     font-size: 14px;
-                    background: var(--gulp-bg);
-                    color: var(--gulp-fg);
+                    background: var(--convot-bg);
+                    color: var(--convot-fg);
                     outline: none;
                     transition: border-color 0.2s;
                     font-family: inherit;
                 }
                 
-                #gulp-widget-input:focus {
-                    border-color: var(--gulp-primary);
+                #convot-widget-input:focus {
+                    border-color: var(--convot-primary);
                     box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
                 }
                 
-                #gulp-widget-input::placeholder {
-                    color: var(--gulp-muted-fg);
+                #convot-widget-input::placeholder {
+                    color: var(--convot-muted-fg);
                 }
                 
-                #gulp-widget-send {
+                #convot-widget-send {
                     padding: 12px 20px;
-                    background: var(--gulp-primary);
-                    color: var(--gulp-primary-fg);
+                    background: var(--convot-primary);
+                    color: var(--convot-primary-fg);
                     border: none;
-                    border-radius: var(--gulp-radius);
+                    border-radius: var(--convot-radius);
                     cursor: pointer;
                     font-size: 14px;
                     font-weight: 600;
@@ -500,46 +500,46 @@
                     min-width: 80px;
                 }
                 
-                #gulp-widget-send:hover:not(:disabled) {
+                #convot-widget-send:hover:not(:disabled) {
                     opacity: 0.9;
                     transform: translateY(-1px);
                 }
                 
-                #gulp-widget-send:disabled {
+                #convot-widget-send:disabled {
                     opacity: 0.5;
                     cursor: not-allowed;
                 }
                 
-                #gulp-widget-loading {
+                #convot-widget-loading {
                     display: flex;
                     gap: 8px;
                     align-items: center;
                     padding: 12px 16px;
-                    background: var(--gulp-muted);
-                    border: 1px solid var(--gulp-border);
-                    border-radius: var(--gulp-radius);
-                    color: var(--gulp-muted-fg);
+                    background: var(--convot-muted);
+                    border: 1px solid var(--convot-border);
+                    border-radius: var(--convot-radius);
+                    color: var(--convot-muted-fg);
                     font-size: 14px;
                 }
                 
-                .gulp-loading-dots {
+                .convot-loading-dots {
                     display: flex;
                     gap: 4px;
                 }
                 
-                .gulp-loading-dot {
+                .convot-loading-dot {
                     width: 6px;
                     height: 6px;
                     border-radius: 50%;
-                    background: var(--gulp-primary);
+                    background: var(--convot-primary);
                     animation: bounce 1.4s infinite ease-in-out both;
                 }
                 
-                .gulp-loading-dot:nth-child(1) {
+                .convot-loading-dot:nth-child(1) {
                     animation-delay: -0.32s;
                 }
                 
-                .gulp-loading-dot:nth-child(2) {
+                .convot-loading-dot:nth-child(2) {
                     animation-delay: -0.16s;
                 }
                 
@@ -552,12 +552,12 @@
                     }
                 }
                 
-                #gulp-widget-button {
+                #convot-widget-button {
                     width: 64px;
                     height: 64px;
                     border-radius: 50%;
-                    background: var(--gulp-primary);
-                    color: var(--gulp-primary-fg);
+                    background: var(--convot-primary);
+                    color: var(--convot-primary-fg);
                     border: none;
                     cursor: pointer;
                     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -568,38 +568,38 @@
                     padding: 0;
                 }
                 
-                #gulp-widget-button svg {
+                #convot-widget-button svg {
                     display: block;
                 }
                 
-                #gulp-widget-button:hover {
+                #convot-widget-button:hover {
                     transform: scale(1.05);
                     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2), 0 4px 6px rgba(0, 0, 0, 0.1);
                 }
                 
-                #gulp-widget-button:active {
+                #convot-widget-button:active {
                     transform: scale(0.95);
                 }
                 
-                #gulp-widget-branding {
+                #convot-widget-branding {
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     gap: 6px;
                     margin-top: 12px;
                     padding-top: 12px;
-                    border-top: 1px solid var(--gulp-border);
+                    border-top: 1px solid var(--convot-border);
                     font-size: 11px;
-                    color: var(--gulp-muted-fg);
+                    color: var(--convot-muted-fg);
                     opacity: 0.8;
                     transition: opacity 0.2s;
                 }
                 
-                #gulp-widget-branding:hover {
+                #convot-widget-branding:hover {
                     opacity: 1;
                 }
                 
-                #gulp-widget-branding a {
+                #convot-widget-branding a {
                     display: flex;
                     align-items: center;
                     gap: 6px;
@@ -608,11 +608,11 @@
                     transition: color 0.2s;
                 }
                 
-                #gulp-widget-branding a:hover {
-                    color: var(--gulp-primary);
+                #convot-widget-branding a:hover {
+                    color: var(--convot-primary);
                 }
                 
-                #gulp-widget-branding svg {
+                #convot-widget-branding svg {
                     display: block;
                 }
             `;
@@ -620,35 +620,35 @@
     }
 
     return `
-            <div id="gulp-widget-container">
-                <div id="gulp-widget-window">
-                    <div id="gulp-widget-header">
-                        <span class="gulp-header-label">Assistant</span>
-                        <button id="gulp-widget-close" aria-label="Close chat">×</button>
+            <div id="convot-widget-container">
+                <div id="convot-widget-window">
+                    <div id="convot-widget-header">
+                        <span class="convot-header-label">Assistant</span>
+                        <button id="convot-widget-close" aria-label="Close chat">×</button>
                     </div>
-                    <div id="gulp-widget-messages"></div>
-                    <div id="gulp-widget-input-area">
-                        <div id="gulp-widget-input-wrapper">
+                    <div id="convot-widget-messages"></div>
+                    <div id="convot-widget-input-area">
+                        <div id="convot-widget-input-wrapper">
                             <input 
                                 type="text" 
-                                id="gulp-widget-input" 
+                                id="convot-widget-input" 
                                 placeholder="Type your message..."
                                 aria-label="Message input"
                             />
-                            <button id="gulp-widget-send" aria-label="Send message">Send</button>
+                            <button id="convot-widget-send" aria-label="Send message">Send</button>
                         </div>
-                        <div id="gulp-widget-branding">
-                            <a href="https://gulpai.com" target="_blank" rel="noopener noreferrer" aria-label="Powered by gulp.">
+                        <div id="convot-widget-branding">
+                            <a href="https://convot.com" target="_blank" rel="noopener noreferrer" aria-label="Powered by convot.">
                                 <span>Powered by</span>
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 65 24" style="height: 16px; width: auto;">
-                                    <text x="0" y="18" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="600" fill="currentColor">gulp</text>
+                                    <text x="0" y="18" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="600" fill="currentColor">convot</text>
                                     <text x="42" y="18" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="600" fill="#F7CE45">.</text>
                                 </svg>
                             </a>
                         </div>
                     </div>
                 </div>
-                <button id="gulp-widget-button" aria-label="Open chat">
+                <button id="convot-widget-button" aria-label="Open chat">
                     <svg width="100%" height="100%" viewBox="0 0 592 592" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="296" cy="296" r="296" fill="currentColor"/>
                         <path d="M234.836 502.603C252.149 505.516 273.313 507.824 298.329 509.52C329.813 511.294 351.098 516.171 362.184 524.153C373.713 532.578 379.479 543.886 379.479 558.076C379.479 566.5 377.939 574.264 374.865 581.371C349.756 588.295 323.311 592 296 592C259.199 592 223.967 585.281 191.462 573.008C190.869 569.934 190.57 566.731 190.57 563.397C190.57 550.538 194.118 538.786 201.213 528.143C207.093 519.325 218.301 510.813 234.836 502.603Z" fill="#F7CE45"/>
@@ -669,20 +669,22 @@
     timestamp = null,
     skipSave = false
   ) {
-    const messagesContainer = document.getElementById("gulp-widget-messages");
+    const messagesContainer = document.getElementById("convot-widget-messages");
     if (!messagesContainer) return;
 
     // Remove empty state if present
-    const emptyState = messagesContainer.querySelector(".gulp-empty-state");
+    const emptyState = messagesContainer.querySelector(".convot-empty-state");
     if (emptyState) {
       emptyState.remove();
     }
 
     const messageDiv = document.createElement("div");
-    messageDiv.className = `gulp-message ${isUser ? "gulp-message-user" : "gulp-message-assistant"}`;
+    messageDiv.className = `convot-message ${
+      isUser ? "convot-message-user" : "convot-message-assistant"
+    }`;
 
     const bubble = document.createElement("div");
-    bubble.className = "gulp-message-bubble";
+    bubble.className = "convot-message-bubble";
 
     if (isUser) {
       bubble.textContent = text;
@@ -708,14 +710,14 @@
   }
 
   function renderMessages() {
-    const messagesContainer = document.getElementById("gulp-widget-messages");
+    const messagesContainer = document.getElementById("convot-widget-messages");
     if (!messagesContainer) return;
 
     messagesContainer.innerHTML = "";
 
     if (config.messages.length === 0) {
       messagesContainer.innerHTML =
-        '<div class="gulp-empty-state">Ask me anything! 👋</div>';
+        '<div class="convot-empty-state">Ask me anything! 👋</div>';
       return;
     }
 
@@ -728,16 +730,16 @@
   }
 
   function showLoading() {
-    const messagesContainer = document.getElementById("gulp-widget-messages");
+    const messagesContainer = document.getElementById("convot-widget-messages");
     if (!messagesContainer) return;
 
     const loadingDiv = document.createElement("div");
-    loadingDiv.id = "gulp-widget-loading";
+    loadingDiv.id = "convot-widget-loading";
     loadingDiv.innerHTML = `
-            <div class="gulp-loading-dots">
-                <div class="gulp-loading-dot"></div>
-                <div class="gulp-loading-dot"></div>
-                <div class="gulp-loading-dot"></div>
+            <div class="convot-loading-dots">
+                <div class="convot-loading-dot"></div>
+                <div class="convot-loading-dot"></div>
+                <div class="convot-loading-dot"></div>
             </div>
             <span>Thinking...</span>
         `;
@@ -746,7 +748,7 @@
   }
 
   function hideLoading() {
-    const loadingDiv = document.getElementById("gulp-widget-loading");
+    const loadingDiv = document.getElementById("convot-widget-loading");
     if (loadingDiv) {
       loadingDiv.remove();
     }
@@ -816,7 +818,7 @@
       }
     } catch (error) {
       hideLoading();
-      console.error("Gulp Widget Error:", error);
+      console.error("Convot Widget Error:", error);
       addMessage("Sorry, I encountered an error. Please try again.", false);
     } finally {
       config.isLoading = false;
@@ -836,11 +838,11 @@
     document.body.insertAdjacentHTML("beforeend", widgetHTML);
 
     // Get elements
-    const button = document.getElementById("gulp-widget-button");
-    const window = document.getElementById("gulp-widget-window");
-    const closeBtn = document.getElementById("gulp-widget-close");
-    const input = document.getElementById("gulp-widget-input");
-    const sendBtn = document.getElementById("gulp-widget-send");
+    const button = document.getElementById("convot-widget-button");
+    const window = document.getElementById("convot-widget-window");
+    const closeBtn = document.getElementById("convot-widget-close");
+    const input = document.getElementById("convot-widget-input");
+    const sendBtn = document.getElementById("convot-widget-send");
 
     // Render existing messages
     renderMessages();

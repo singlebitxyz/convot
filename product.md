@@ -1,17 +1,17 @@
-# 🧠 Gulp — Technical Context Specification (v1.0)
+# 🧠 Convot — Technical Context Specification (v1.0)
 
 ### One-liner
 
-> **Gulp** lets any organization easily embed an intelligent chatbot on their website — powered by their own documents, URLs, or custom text — through a simple dashboard and API.
+> **Convot** lets any organization easily embed an intelligent chatbot on their website — powered by their own documents, URLs, or custom text — through a simple dashboard and API.
 
 ---
 
 ## 1. Product Overview
 
 **Goal:**
-Gulp enables companies, institutes, and information-heavy websites to add a context-aware chat assistant trained on their own data — PDFs, DOCX files, text, and even website URLs — without writing backend code.
+Convot enables companies, institutes, and information-heavy websites to add a context-aware chat assistant trained on their own data — PDFs, DOCX files, text, and even website URLs — without writing backend code.
 
-Admins use the **Gulp Dashboard** to:
+Admins use the **Convot Dashboard** to:
 
 1. Upload or link content (files or URLs).
 2. Configure and “train” their bot.
@@ -19,7 +19,7 @@ Admins use the **Gulp Dashboard** to:
 4. Copy an embed script to place on their site.
 5. View analytics on what users are asking.
 
-End users on client sites interact with a **small chat widget** that connects to Gulp’s backend for intelligent responses.
+End users on client sites interact with a **small chat widget** that connects to Convot's backend for intelligent responses.
 
 ---
 
@@ -169,7 +169,7 @@ End users on client sites interact with a **small chat widget** that connects to
 → Create Bot → Upload content or URLs → Wait for ingestion → Copy embed script.
 
 **2. Widget integration**
-→ Website loads Gulp script → Chat UI initializes → Local session_id created → POST `/query` to backend → Gulp responds using trained context.
+→ Website loads Convot script → Chat UI initializes → Local session_id created → POST `/query` to backend → Convot responds using trained context.
 
 **3. Retrieval-Augmented Generation (RAG)**
 → Query embeddings computed → Vector search in Supabase → Top chunks injected in prompt → LLM generates answer → Return with sources.
@@ -248,7 +248,11 @@ Actions:
 -   “Copy embed code” section:
 
     ```html
-    <script src="https://gulp.ai/widget.js" data-bot-id="BOT_ID" async></script>
+    <script
+        src="https://convot.ai/widget.js"
+        data-bot-id="BOT_ID"
+        async
+    ></script>
     ```
 
 -   Preview pane showing chat window.
@@ -555,8 +559,8 @@ Keep tone friendly and professional.
 ## 15. Example Widget Script (for docs)
 
 ```html
-<div id="gulp-chat" data-bot-id="BOT_ID"></div>
-<script src="https://cdn.gulp.ai/widget.js" async></script>
+<div id="convot-chat" data-bot-id="BOT_ID"></div>
+<script src="https://cdn.convot.ai/widget.js" async></script>
 ```
 
 -   Auto-initializes and loads chat UI.

@@ -13,7 +13,7 @@ const testimonials = [
     avatar:
       "https://images.unsplash.com/photo-1494790108755-2616b612b47c?w=150&h=150&fit=crop&crop=face",
     content:
-      "Gulp transformed how we handle student inquiries. We uploaded our course catalogs and policies, and now students get instant answers 24/7.",
+      "Convot transformed how we handle student inquiries. We uploaded our course catalogs and policies, and now students get instant answers 24/7.",
     role: "Academic Affairs Director",
   },
   {
@@ -22,7 +22,7 @@ const testimonials = [
     avatar:
       "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
     content:
-      "Our support team was overwhelmed with FAQs. Gulp reduced ticket volume by 60% by answering common questions automatically using our documentation.",
+      "Our support team was overwhelmed with FAQs. Convot reduced ticket volume by 60% by answering common questions automatically using our documentation.",
     role: "Customer Success Manager",
   },
   {
@@ -31,7 +31,7 @@ const testimonials = [
     avatar:
       "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
     content:
-      "We crawled our entire documentation site and embedded Gulp. Users can now search through thousands of articles conversationally.",
+      "We crawled our entire documentation site and embedded Convot. Users can now search through thousands of articles conversationally.",
     role: "Product Manager",
   },
   {
@@ -40,7 +40,7 @@ const testimonials = [
     avatar:
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
     content:
-      "Gulp helps our team quickly find information from training materials and policy documents. The analytics show us what questions are most common.",
+      "Convot helps our team quickly find information from training materials and policy documents. The analytics show us what questions are most common.",
     role: "HR Technology Lead",
   },
   {
@@ -58,7 +58,7 @@ const testimonials = [
     avatar:
       "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
     content:
-      "Gulp handles patient inquiries about appointments, insurance, and services. The security and compliance features give us confidence.",
+      "Convot handles patient inquiries about appointments, insurance, and services. The security and compliance features give us confidence.",
     role: "IT Director",
   },
 ];
@@ -115,7 +115,7 @@ export default function Testimonials() {
           Trusted by organizations worldwide
         </h2>
         <p className="text-base text-foreground/80 max-w-2xl mx-auto">
-          See how universities, companies, and teams use Gulp to provide
+          See how universities, companies, and teams use Convot to provide
           intelligent assistance and reduce support workload.
         </p>
       </div>

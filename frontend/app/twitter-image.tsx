@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "Gulp - AI Assistant Platform";
+export const alt = "Convot - AI Assistant Platform";
 export const size = {
   width: 1200,
   height: 630,
@@ -33,7 +33,7 @@ export default async function Image() {
         >
           <img
             src="https://saas.nbarkiya.xyz/logo/full-logo-text-white.png"
-            alt="Gulp Logo"
+            alt="Convot Logo"
             style={{
               height: 120,
               width: "auto",
@@ -85,4 +85,5 @@ export default async function Image() {
     }
   );
 }
+
 

@@ -1,4 +1,4 @@
-# 🚀 Gulp - Modern Next.js App for AI Chatbots
+# 🚀 Convot - Modern Next.js App for AI Chatbots
 
 [![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
@@ -6,7 +6,7 @@
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
 [![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
 
-> **Gulp** is a production-ready Next.js 15 application for building AI chatbots. Built with modern best practices, it includes authentication, state management, beautiful UI components, and everything you need to build scalable chatbot applications.
+> **Convot** is a production-ready Next.js 15 application for building AI chatbots. Built with modern best practices, it includes authentication, state management, beautiful UI components, and everything you need to build scalable chatbot applications.
 
 ## ✨ Features
 
@@ -63,8 +63,8 @@
 1. **Clone the repository**
 
 ```bash
-git clone https://github.com/namanbarkiya/gulp.git
-cd gulp
+git clone https://github.com/namanbarkiya/convot.git
+cd convot
 ```
 
 2. **Install dependencies**
@@ -109,7 +109,7 @@ bun dev
 ## 📁 Project Structure
 
 ```
-gulp/
+convot/
 ├── app/                    # Next.js 15 App Router
 │   ├── api/               # API routes
 │   ├── dashboard/         # Protected dashboard pages
@@ -223,13 +223,13 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Support
 
-- **GitHub Issues**: [Report bugs or request features](https://github.com/namanbarkiya/gulp/issues)
-- **Discussions**: [Join the community](https://github.com/namanbarkiya/gulp/discussions)
+- **GitHub Issues**: [Report bugs or request features](https://github.com/namanbarkiya/convot/issues)
+- **Discussions**: [Join the community](https://github.com/namanbarkiya/convot/discussions)
 - **Author**: [Naman Barkiya](https://github.com/namanbarkiya)
 
 ## 🌟 Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=namanbarkiya/gulp&type=Date)](https://star-history.com/#namanbarkiya/gulp&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=namanbarkiya/convot&type=Date)](https://star-history.com/#namanbarkiya/convot&Date)
 
 ---
 

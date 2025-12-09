@@ -1,9 +1,9 @@
 {
-    "name": "gulp-bot-web",
+    "name": "convot-bot-web",
     "private": true,
     "version": "1.0.0",
     "type": "module",
-    "description": "Simple web page with Gulp AI Chat Bot widget",
+    "description": "Simple web page with Convot AI Chat Bot widget",
     "scripts": {
         "dev": "vite",
         "build": "vite build",

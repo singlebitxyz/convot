@@ -1,12 +1,12 @@
-# Gulp API Backend
+# Convot API Backend
 
 A production-ready FastAPI backend with Supabase authentication, rate limiting, and comprehensive architecture. Built for developers who want to get started quickly with a robust, scalable backend solution.
 
 ## 🚀 Quick Start
 
-### What is Gulp?
+### What is Convot?
 
-Gulp is a **production-ready FastAPI backend** that provides everything you need to build scalable, secure, and maintainable applications. It's designed for developers who want to focus on building features rather than setting up infrastructure.
+Convot is a **production-ready FastAPI backend** that provides everything you need to build scalable, secure, and maintainable applications. It's designed for developers who want to focus on building features rather than setting up infrastructure.
 
 ### Key Features
 
@@ -27,8 +27,8 @@ Gulp is a **production-ready FastAPI backend** that provides everything you need
 1. **Clone the repository**
 
 ```bash
-git clone https://github.com/namanbarkiya/gulp.git
-cd gulp
+git clone https://github.com/namanbarkiya/convot.git
+cd convot
 ```
 
 2. **Create virtual environment**
@@ -127,7 +127,7 @@ python run.py
 ### Project Structure
 
 ```
-gulp/
+convot/
 ├── config/          # Configuration & database
 ├── core/           # Exceptions & logging
 ├── middleware/     # Auth & rate limiting
@@ -165,8 +165,8 @@ A `Dockerfile` is provided that includes:
 **Build and run:**
 
 ```bash
-docker build -t gulp-backend .
-docker run -p 8000:8000 gulp-backend
+docker build -t convot-backend .
+docker run -p 8000:8000 convot-backend
 ```
 
 Works on Railway, Heroku, AWS, GCP, Azure, Fly.io, Render, and any Docker-compatible platform.
@@ -182,9 +182,9 @@ Works on Railway, Heroku, AWS, GCP, Azure, Fly.io, Render, and any Docker-compat
 -   **New Features**: See `NEW_FEATURE_GUIDE.md`
 -   **Interactive API Docs**: Available at `http://localhost:8000/docs` when running
 
-## 🎯 Why Gulp?
+## 🎯 Why Convot?
 
-Gulp is designed to be a production-ready backend for developers who want to:
+Convot is designed to be a production-ready backend for developers who want to:
 
 -   **Start quickly** with a production-ready backend
 -   **Scale efficiently** with proven architecture patterns

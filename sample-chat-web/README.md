@@ -1,11 +1,11 @@
-# Gulp Bot Web
+# Convot Bot Web
 
-A simple, clean web page showcasing the Gulp AI Chat Bot widget.
+A simple, clean web page showcasing the Convot AI Chat Bot widget.
 
 ## Features
 
 -   🎨 Clean, minimal design with gradient background
--   💬 Embedded Gulp Chat Widget
+-   💬 Embedded Convot Chat Widget
 -   📱 Fully responsive
 -   🌙 Dark mode support (widget auto-detects system preference)
 -   💾 Chat history persistence (localStorage)
@@ -71,7 +71,7 @@ npm run preview
 
 ```html
 <script>
-    window.gulpWidgetConfig = {
+    window.convotWidgetConfig = {
         token: "YOUR_WIDGET_TOKEN",
         apiUrl: "http://localhost:8000",
     };
@@ -88,7 +88,7 @@ simple-html-web/
 │   ├── main.js        # Simple page content
 │   └── style.css      # Minimal styles
 ├── public/
-│   └── widget.js      # Gulp Chat Widget
+│   └── widget.js      # Convot Chat Widget
 └── package.json       # Dependencies
 ```
 
@@ -123,4 +123,4 @@ body {
 
 -   Node.js 18+
 -   npm or yarn
--   Gulp backend server running on port 8000 (or your configured port)
+-   Convot backend server running on port 8000 (or your configured port)

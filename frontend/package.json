@@ -1,7 +1,7 @@
 {
-  "name": "gulp-frontend",
+  "name": "convot-frontend",
   "version": "1.0.0",
-  "description": "Gulp - AI Chatbot Platform with Next.js 15, authentication, state management, and beautiful UI components",
+  "description": "Convot - AI Chatbot Platform with Next.js 15, authentication, state management, and beautiful UI components",
   "keywords": [
     "nextjs",
     "react",
@@ -24,11 +24,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/namanbarkiya/gulp.git"
+    "url": "https://github.com/namanbarkiya/convot.git"
   },
-  "homepage": "https://gulp.com",
+  "homepage": "https://convot.com",
   "bugs": {
-    "url": "https://github.com/namanbarkiya/gulp/issues"
+    "url": "https://github.com/namanbarkiya/convot/issues"
   },
   "private": true,
   "scripts": {

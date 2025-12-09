@@ -1,9 +1,4 @@
-import {
-  BarChart3,
-  Bot,
-  Globe,
-  Upload,
-} from "lucide-react";
+import { BarChart3, Bot, Globe, Upload } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { BentoCard, BentoGrid } from "@/components/ui/magicui/bento-grid";
 import { Marquee } from "@/components/ui/magicui/marquee";
@@ -43,7 +38,7 @@ const features = [
     Icon: Upload,
     name: "Upload & Index Content",
     description:
-      "Upload PDFs, DOCX files, or add website URLs. Gulp automatically extracts, chunks, and indexes your content for intelligent retrieval.",
+      "Upload PDFs, DOCX files, or add website URLs. Convot automatically extracts, chunks, and indexes your content for intelligent retrieval.",
     href: "#",
     cta: "Learn more",
     className: "col-span-3 lg:col-span-1",

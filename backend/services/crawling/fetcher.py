@@ -6,7 +6,7 @@ class RequestsFetcher:
     def __init__(self, timeout: int = 15):
         self.timeout = timeout
         self.headers = {
-            "User-Agent": "GulpCrawler/1.0 (+https://example.com)"
+            "User-Agent": "ConvotCrawler/1.0 (+https://example.com)"
         }
 
     def fetch(self, url: str) -> Dict:

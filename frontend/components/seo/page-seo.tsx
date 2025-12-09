@@ -17,7 +17,7 @@ interface PageSEOProps {
 }
 
 export function PageSEO({
-  title = "Gulp - Embed Intelligent Chatbots on Your Website",
+  title = "Convot - Embed Intelligent Chatbots on Your Website",
   description = "Embed intelligent chatbots on your website powered by your own documents, PDFs, URLs, or custom text. Train your bot with custom knowledge bases, choose OpenAI or Gemini, and embed with one line of code. No backend required.",
   keywords = [
     "AI chatbot",
@@ -39,9 +39,9 @@ export function PageSEO({
   tags = [],
   structuredData,
 }: PageSEOProps) {
-  const fullTitle = title.includes("Gulp")
+  const fullTitle = title.includes("Convot")
     ? title
-    : `${title} | Gulp - AI Assistant Platform`;
+    : `${title} | Convot - AI Assistant Platform`;
   const fullDescription =
     description.length > 160
       ? description.substring(0, 157) + "..."
@@ -61,7 +61,7 @@ export function PageSEO({
       <meta property="og:type" content={type} />
       <meta property="og:url" content={url} />
       <meta property="og:image" content={image} />
-      <meta property="og:site_name" content="Gulp" />
+      <meta property="og:site_name" content="Convot" />
       <meta property="og:locale" content="en_US" />
 
       {/* Twitter Card */}
@@ -127,7 +127,7 @@ export function PageSEO({
 export const TemplateStructuredData = {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  name: "Gulp",
+  name: "Convot",
   description:
     "Embed intelligent chatbots on your website powered by your own documents, PDFs, URLs, or custom text. Train your bot with custom knowledge bases, choose OpenAI or Gemini, and embed with one line of code.",
   url: "https://saas.nbarkiya.xyz",
@@ -136,7 +136,7 @@ export const TemplateStructuredData = {
   author: {
     "@type": "Person",
     name: "Naman Barkiya",
-    url: "https://github.com/namanbarkiya/gulp",
+    url: "https://github.com/namanbarkiya/convot",
   },
   offers: {
     "@type": "Offer",
@@ -151,15 +151,15 @@ export const TemplateStructuredData = {
 export const OrganizationStructuredData = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  name: "Gulp",
+  name: "Convot",
   url: "https://saas.nbarkiya.xyz",
   logo: "https://saas.nbarkiya.xyz/logo/full-logo-text-white.png",
   sameAs: [
-    "https://github.com/namanbarkiya/gulp",
+    "https://github.com/namanbarkiya/convot",
   ],
   founder: {
     "@type": "Person",
     name: "Naman Barkiya",
-    url: "https://github.com/namanbarkiya/gulp",
+    url: "https://github.com/namanbarkiya/convot",
   },
 };

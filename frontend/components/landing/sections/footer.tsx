@@ -34,7 +34,7 @@ export default function Footer({ className }: { className?: string }) {
             </p>
             <div className="flex gap-4">
               <a
-                href="https://github.com/namanbarkiya/gulp"
+                href="https://github.com/namanbarkiya/convot"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 text-foreground/80 hover:text-primary transition-colors"
@@ -87,7 +87,7 @@ export default function Footer({ className }: { className?: string }) {
             <ul className="space-y-2 text-sm">
               <li>
                 <a
-                  href="https://github.com/namanbarkiya/gulp"
+                  href="https://github.com/namanbarkiya/convot"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary transition-colors"
@@ -97,7 +97,7 @@ export default function Footer({ className }: { className?: string }) {
               </li>
               <li>
                 <a
-                  href="https://github.com/namanbarkiya/gulp"
+                  href="https://github.com/namanbarkiya/convot"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary transition-colors"
@@ -107,7 +107,7 @@ export default function Footer({ className }: { className?: string }) {
               </li>
               <li>
                 <a
-                  href="https://github.com/namanbarkiya/gulp/issues"
+                  href="https://github.com/namanbarkiya/convot/issues"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary transition-colors"
@@ -130,10 +130,10 @@ export default function Footer({ className }: { className?: string }) {
         {/* Bottom Section */}
         <div className="border-t border-primary/20 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
           <div className="text-sm text-foreground/60">
-            &copy; {new Date().getFullYear()} gulp.
+            &copy; {new Date().getFullYear()} convot.
             {/* Built by{" "}
             <a
-              href="https://github.com/namanbarkiya/gulp"
+              href="https://github.com/namanbarkiya/convot"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:underline hover:text-primary transition-colors"

@@ -16,11 +16,11 @@ const dmSans = DM_Sans({
 
 export const metadata: Metadata = {
   title: {
-    default: "Gulp - Embed Intelligent Chatbots on Your Website",
-    template: "%s | Gulp - AI Assistant Platform",
+    default: "Convot - Embed Intelligent Chatbots on Your Website",
+    template: "%s | Convot - AI Assistant Platform",
   },
   description:
-    "Gulp lets you embed intelligent chatbots on your website powered by your own documents, PDFs, URLs, or custom text. Train your bot with custom knowledge bases, choose OpenAI or Gemini, get insights on user questions, and embed with one line of code. No backend required.",
+    "Convot lets you embed intelligent chatbots on your website powered by your own documents, PDFs, URLs, or custom text. Train your bot with custom knowledge bases, choose OpenAI or Gemini, get insights on user questions, and embed with one line of code. No backend required.",
   keywords: [
     "AI chatbot",
     "chatbot builder",
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     "custom chatbot",
     "AI assistant platform",
   ],
-  authors: [{ name: "Naman Barkiya", url: "https://github.com/namanbarkiya/gulp" }],
+  authors: [{ name: "Naman Barkiya", url: "https://github.com/namanbarkiya/convot" }],
   creator: "Naman Barkiya",
   publisher: "Naman Barkiya",
   formatDetection: {
@@ -57,22 +57,22 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://saas.nbarkiya.xyz",
-    title: "Gulp - Embed Intelligent Chatbots on Your Website",
+    title: "Convot - Embed Intelligent Chatbots on Your Website",
     description:
       "Embed intelligent chatbots on your website powered by your own documents, PDFs, URLs, or custom text. Train your bot with custom knowledge bases, choose OpenAI or Gemini, get insights on user questions, and embed with one line of code. No backend required.",
-    siteName: "Gulp",
+    siteName: "Convot",
     images: [
       {
         url: "https://saas.nbarkiya.xyz/logo/full-logo-text-white.png",
         width: 1200,
         height: 630,
-        alt: "Gulp - AI Assistant Platform",
+        alt: "Convot - AI Assistant Platform",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Gulp - Embed Intelligent Chatbots on Your Website",
+    title: "Convot - Embed Intelligent Chatbots on Your Website",
     description:
       "Embed intelligent chatbots on your website powered by your own documents, PDFs, URLs, or custom text. Train your bot with custom knowledge bases, choose OpenAI or Gemini, and embed with one line of code.",
     creator: "@namanbarkiya",
@@ -132,7 +132,7 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "SoftwareApplication",
-              name: "Gulp",
+              name: "Convot",
               description:
                 "Embed intelligent chatbots on your website powered by your own documents, PDFs, URLs, or custom text. Train your bot with custom knowledge bases, choose OpenAI or Gemini, get insights on user questions, and embed with one line of code.",
               url: "https://saas.nbarkiya.xyz",
@@ -141,7 +141,7 @@ export default function RootLayout({
               author: {
                 "@type": "Person",
                 name: "Naman Barkiya",
-                url: "https://github.com/namanbarkiya/gulp",
+                url: "https://github.com/namanbarkiya/convot",
               },
               offers: {
                 "@type": "Offer",
@@ -171,7 +171,7 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "WebSite",
-              name: "Gulp - AI Assistant Platform",
+              name: "Convot - AI Assistant Platform",
               url: "https://saas.nbarkiya.xyz",
               description:
                 "Embed intelligent chatbots on your website powered by your own documents, PDFs, URLs, or custom text. No backend code required.",

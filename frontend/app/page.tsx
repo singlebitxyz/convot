@@ -72,7 +72,7 @@ export default function LandingPage() {
               <RevealOnScroll direction="up" delay={100}>
                 <SectionHeader
                   title="Perfect for every organization"
-                  subtitle="Universities, companies, knowledge bases, and internal teams use Gulp to provide intelligent assistance."
+                  subtitle="Universities, companies, knowledge bases, and internal teams use Convot to provide intelligent assistance."
                 />
               </RevealOnScroll>
               {/* Final CTA */}

@@ -1,10 +1,10 @@
 {
     "info": {
-        "_postman_id": "gulp-api-collection",
-        "name": "Gulp API",
-        "description": "Complete API collection for Gulp chatbot platform with bot management, authentication, RAG features, and embeddable widget support.\n\n**Features:**\n- Bot management (CRUD)\n- Widget token management\n- Source management (files & URLs)\n- RAG query engine (authenticated & public widget endpoints)\n- Chat history support (last 5 messages)\n- CORS-enabled widget queries\n- Subscription plan management with usage limits\n- Plan-based feature gating (Train Mode, Analytics)",
+        "_postman_id": "convot-api-collection",
+        "name": "Convot API",
+        "description": "Complete API collection for Convot chatbot platform with bot management, authentication, RAG features, and embeddable widget support.\n\n**Features:**\n- Bot management (CRUD)\n- Widget token management\n- Source management (files & URLs)\n- RAG query engine (authenticated & public widget endpoints)\n- Chat history support (last 5 messages)\n- CORS-enabled widget queries\n- Subscription plan management with usage limits\n- Plan-based feature gating (Train Mode, Analytics)",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-        "_exporter_id": "gulp-api"
+        "_exporter_id": "convot-api"
     },
     "item": [
         {
@@ -1027,7 +1027,7 @@
                     "// Set default headers for all requests",
                     "pm.request.headers.add({",
                     "    key: 'User-Agent',",
-                    "    value: 'Gulp-API-Client/1.0'",
+                    "    value: 'Convot-API-Client/1.0'",
                     "});",
                     "",
                     "// Log request details",
