@@ -16,7 +16,7 @@ export default function Footer({ className }: { className?: string }) {
   return (
     <footer
       className={cn(
-        "w-full border-t border-primary/20 pt-12 pb-8 bg-background",
+        "w-full border-t border-white/10 pt-12 pb-8 bg-background",
         className
       )}
     >
@@ -55,7 +55,7 @@ export default function Footer({ className }: { className?: string }) {
               <li>
                 <Link
                   href="/#features"
-                  className="text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary transition-colors"
+                  className="text-foreground/60 hover:text-foreground transition-colors"
                 >
                   Features
                 </Link>
@@ -63,7 +63,7 @@ export default function Footer({ className }: { className?: string }) {
               <li>
                 <Link
                   href="/#pricing"
-                  className="text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary transition-colors"
+                  className="text-foreground/60 hover:text-foreground transition-colors"
                 >
                   Pricing
                 </Link>
@@ -71,7 +71,7 @@ export default function Footer({ className }: { className?: string }) {
               <li>
                 <Link
                   href="/signup"
-                  className="text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary transition-colors"
+                  className="text-foreground/60 hover:text-foreground transition-colors"
                 >
                   Get Started
                 </Link>
@@ -90,7 +90,7 @@ export default function Footer({ className }: { className?: string }) {
                   href="https://github.com/namanbarkiya/convot"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary transition-colors"
+                  className="text-foreground/60 hover:text-foreground transition-colors"
                 >
                   Documentation
                 </a>
@@ -100,7 +100,7 @@ export default function Footer({ className }: { className?: string }) {
                   href="https://github.com/namanbarkiya/convot"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary transition-colors"
+                  className="text-foreground/60 hover:text-foreground transition-colors"
                 >
                   GitHub Repository
                 </a>
@@ -110,7 +110,7 @@ export default function Footer({ className }: { className?: string }) {
                   href="https://github.com/namanbarkiya/convot/issues"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary transition-colors"
+                  className="text-foreground/60 hover:text-foreground transition-colors"
                 >
                   Support
                 </a>
@@ -118,7 +118,7 @@ export default function Footer({ className }: { className?: string }) {
               <li>
                 <Link
                   href="/health"
-                  className="text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary transition-colors"
+                  className="text-foreground/60 hover:text-foreground transition-colors"
                 >
                   System Status
                 </Link>
@@ -128,7 +128,7 @@ export default function Footer({ className }: { className?: string }) {
         </div>
 
         {/* Bottom Section */}
-        <div className="border-t border-primary/20 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div className="border-t border-white/10 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
           <div className="text-sm text-foreground/60">
             &copy; {new Date().getFullYear()} convot.
             {/* Built by{" "}
@@ -145,7 +145,8 @@ export default function Footer({ className }: { className?: string }) {
           <div className="flex items-center gap-4">
             <Button
               onClick={scrollToTop}
-              className="flex items-center gap-2 text-sm transition-colors"
+              variant="outline"
+              className="flex items-center gap-2 text-sm border-white/10 bg-white/5 hover:bg-white/10 hover:text-foreground"
               aria-label="Back to top"
             >
               <ArrowUpIcon className="w-4 h-4" />

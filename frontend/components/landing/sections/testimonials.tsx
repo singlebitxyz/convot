@@ -3,8 +3,6 @@
 import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
-import { Marquee } from "@/components/ui/magicui/marquee";
-import { cn } from "@/lib/utils";
 
 const testimonials = [
   {
@@ -70,16 +68,9 @@ function TestimonialCard({
 }) {
   return (
     <Card
-      className={cn(
-        "w-96 h-52 p-6 mx-3",
-        "bg-card",
-        "border border-primary/20",
-        "shadow-lg",
-        "hover:shadow-xl hover:shadow-primary/10 hover:border-primary/40 hover:scale-[1.02] transition-all duration-500",
-        "relative"
-      )}
+      className="h-full p-6 bg-white/[0.04] border border-white/10 hover:bg-white/[0.06] transition-colors"
     >
-      <CardContent className="p-0 h-full flex flex-col justify-between relative z-10">
+      <CardContent className="p-0 h-full flex flex-col justify-between">
         <p className="text-sm text-foreground/80 leading-relaxed mb-4">
           &ldquo;{testimonial.content}&rdquo;
         </p>
@@ -110,30 +101,25 @@ function TestimonialCard({
 export default function Testimonials() {
   return (
     <section className="overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 text-center mb-12">
-        <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-3">
-          Trusted by organizations worldwide
-        </h2>
-        <p className="text-base text-foreground/80 max-w-2xl mx-auto">
-          See how universities, companies, and teams use Convot to provide
-          intelligent assistance and reduce support workload.
-        </p>
-      </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+        <div className="mb-10">
+          <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-3">
+            Trusted by teams worldwide
+          </h2>
+          <p className="text-base text-foreground/70 max-w-2xl">
+            Universities, companies, and internal teams use Convot to reduce
+            support load and make knowledge instantly accessible.
+          </p>
+        </div>
 
-      <div className="relative w-full">
-        <Marquee pauseOnHover className="[--duration:40s]">
-          {testimonials.map((testimonial, index) => (
-            <TestimonialCard key={index} testimonial={testimonial} />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {testimonials.map((testimonial) => (
+            <TestimonialCard
+              key={`${testimonial.name}-${testimonial.handle}`}
+              testimonial={testimonial}
+            />
           ))}
-        </Marquee>
-
-        {/* Gradient shadow overlays for sleek fade effect */}
-        <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-background via-background/80 to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-background via-background/80 to-transparent z-10 pointer-events-none" />
-
-        {/* Additional subtle shadow layers for depth */}
-        <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-background/60 to-transparent z-10 pointer-events-none blur-sm" />
-        <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-background/60 to-transparent z-10 pointer-events-none blur-sm" />
+        </div>
       </div>
     </section>
   );

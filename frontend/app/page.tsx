@@ -5,11 +5,11 @@ import CTA from "@/components/landing/sections/cta";
 import Features from "@/components/landing/sections/features";
 import Footer from "@/components/landing/sections/footer";
 import Hero from "@/components/landing/sections/hero";
+import HowItWorks from "@/components/landing/sections/how-it-works";
+import Logos from "@/components/landing/sections/logos";
 import Navbar from "@/components/landing/sections/navbar";
 import Pricing from "@/components/landing/sections/pricing";
-import Stats from "@/components/landing/sections/stats";
 import Testimonials from "@/components/landing/sections/testimonials";
-import { ScrollProgress } from "@/components/ui/magicui/scroll-progress";
 import { RevealOnScroll } from "@/components/ui/reveal-on-scroll";
 
 export default function LandingPage() {
@@ -23,27 +23,30 @@ export default function LandingPage() {
         {/* Content wrapper */}
         <div className="relative z-10">
           <Navbar />
-          <ScrollProgress />
 
           {/* Hero Section */}
           <RevealOnScroll direction="up" delay={200}>
             <Hero />
           </RevealOnScroll>
 
-          {/* Stats Section */}
-          <div className="py-20">
-            <RevealOnScroll direction="up" delay={200}>
-              <Stats />
-            </RevealOnScroll>
-          </div>
+          {/* Social Proof */}
+          <RevealOnScroll direction="up" delay={120}>
+            <Logos />
+          </RevealOnScroll>
+
+          {/* How it works */}
+          <RevealOnScroll direction="up" delay={160}>
+            <HowItWorks />
+          </RevealOnScroll>
 
           {/* Features Section */}
-          <div id="features" className="py-20 scroll-mt-20">
+          <div id="features" className="py-4 sm:py-14 scroll-mt-20">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
               <RevealOnScroll direction="up" delay={100}>
                 <SectionHeader
-                  title="Everything you need to build intelligent chatbots"
-                  subtitle="Upload content, configure your bot, and embed it on your website. Get insights on user questions and improve your knowledge base."
+                  title="Everything you need — nothing you don’t"
+                  subtitle="A focused set of features designed for modern AI landing pages: fast setup, grounded answers, and a beautiful embed experience."
+                  align="left"
                 />
               </RevealOnScroll>
               <RevealOnScroll direction="up" delay={300}>
@@ -53,26 +56,27 @@ export default function LandingPage() {
           </div>
 
           {/* Testimonials Section */}
-          <div className="py-20">
+          {/* <div className="py-4 sm:py-14">
             <RevealOnScroll direction="up" delay={200}>
               <Testimonials />
             </RevealOnScroll>
-          </div>
+          </div> */}
 
           {/* Pricing Section */}
-          <div className="py-20">
+          <div className="py-4 sm:py-14">
             <RevealOnScroll direction="up" delay={200}>
               <Pricing />
             </RevealOnScroll>
           </div>
 
           {/* Use Cases Section */}
-          <div className="py-20">
+          <div className="py-4 sm:py-14">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
               <RevealOnScroll direction="up" delay={100}>
                 <SectionHeader
-                  title="Perfect for every organization"
-                  subtitle="Universities, companies, knowledge bases, and internal teams use Convot to provide intelligent assistance."
+                  title="Built for real teams"
+                  subtitle="Support, docs, internal enablement — wherever users need quick, correct answers."
+                  align="left"
                 />
               </RevealOnScroll>
               {/* Final CTA */}

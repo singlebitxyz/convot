@@ -2,103 +2,117 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
-import { ArrowRightIcon } from "@radix-ui/react-icons";
-import { ChevronDown } from "lucide-react";
+import { ArrowRight, Clock, Shield, Zap } from "lucide-react";
+import ProductPreview from "@/components/landing/sections/product-preview";
 import { useAuth } from "@/components/providers/auth-provider";
-import { AnimatedShinyText } from "@/components/ui/magicui/animated-shiny-text";
-import { AuroraText } from "@/components/ui/magicui/aurora-text";
-import { InteractiveHoverButton } from "@/components/ui/magicui/interactive-hover-button";
-import { WordRotate } from "@/components/ui/magicui/word-rotate";
-import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 export default function Hero() {
   const { isAuthenticated } = useAuth();
   const router = useRouter();
 
-  const handleAuthButtonClick = () => {
-    if (isAuthenticated) {
-      router.push("/dashboard");
-    } else {
-      router.push("/login");
-    }
-  };
-
   return (
-    <section className="relative flex min-h-screen md:min-h-[90vh] flex-col items-center justify-center px-2 py-8 md:px-4 md:py-24 overflow-hidden">
-      {/* Subtle yellow accent orbs */}
-      <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-primary/10 rounded-full blur-3xl animate-pulse" />
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse delay-1000" />
-      <div className="relative z-10 flex flex-col items-center gap-8 w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-        {" "}
-        <div className="z-10 flex items-center justify-center">
-          {" "}
-          <div
-            className={cn(
-              "group rounded-full border border-primary/20 bg-primary/10 text-base text-primary-foreground transition-all ease-in hover:cursor-pointer hover:bg-primary/20"
-            )}
-          >
-            {" "}
-            <AnimatedShinyText
-              className="inline-flex items-center justify-center px-4 py-1 transition ease-out hover:text-primary hover:duration-300"
-              onClick={() =>
-                window.open("https://github.com/namanbarkiya/convot", "_blank")
-              }
-            >
-              {" "}
-              <span>✨ Intelligent AI Assistant Platform</span>{" "}
-              <ArrowRightIcon className="ml-1 size-3 transition-transform duration-300 ease-in-out group-hover:translate-x-0.5" />{" "}
-            </AnimatedShinyText>{" "}
-          </div>{" "}
-        </div>{" "}
-        <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-center tracking-tight leading-tight">
-          Embed Intelligent <AuroraText>Chatbots</AuroraText> on Your Website
-        </h1>
-        <div className="mt-2">
-          {" "}
-          <WordRotate
-            words={[
-              "Powered by your own documents, PDFs, and URLs.",
-              "Train your bot with custom knowledge bases.",
-              "Choose OpenAI or Gemini for intelligent responses.",
-              "Get insights on what users are asking.",
-              "One-line embed script. No backend code needed.",
-            ]}
-            className="text-lg text-center md:text-xl text-foreground/80 font-normal min-h-[2rem]"
-            duration={2200}
-          />{" "}
-        </div>{" "}
-        <div className="mt-6 flex flex-col sm:flex-row gap-3 w-fit max-w-lg mx-auto">
-          <InteractiveHoverButton onClick={handleAuthButtonClick}>
-            {isAuthenticated ? "Go to Dashboard" : "Get Started Free"}
-          </InteractiveHoverButton>
-          <InteractiveHoverButton
-            onClick={() =>
-              window.open("https://github.com/namanbarkiya/convot", "_blank")
-            }
-          >
-            View Documentation
-          </InteractiveHoverButton>
-        </div>
-        <div className="mt-6 text-center text-sm text-foreground/60">
-          <p>
-            Trusted by universities, companies, and knowledge-base sites
-            worldwide
-          </p>
-        </div>
-      </div>
+    <section className="relative overflow-hidden pt-28 md:pt-36 pb-16 md:pb-24">
+      {/* Layered background effects */}
+      <div className="absolute inset-0 bg-grid-white/[0.02] bg-grid-16" />
+      <div className="pointer-events-none absolute -top-32 left-1/2 h-[600px] w-[900px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_50%_30%,rgba(247,206,69,0.15),transparent_60%)] blur-3xl" />
+      <div className="pointer-events-none absolute top-1/2 right-0 h-[400px] w-[400px] -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(247,206,69,0.08),transparent_70%)] blur-2xl" />
 
-      {/* Animated Scroll Down Arrow */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20">
-        <a
-          href="#features"
-          className="flex flex-col items-center gap-2 text-foreground/60 hover:text-primary transition-colors duration-300 group"
-          aria-label="Scroll to features"
-        >
-          <span className="text-xs font-medium tracking-wider uppercase animate-pulse">
-            ...
-          </span>
-          <ChevronDown className="w-6 h-6 animate-bounce group-hover:translate-y-1 transition-transform duration-300" />
-        </a>
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Hero content - stacked on mobile, side by side on desktop */}
+        <div className="flex flex-col xl:flex-row xl:items-center gap-12 xl:gap-16">
+          {/* Left column - Text content */}
+          <div className="flex-1 max-w-2xl xl:max-w-xl">
+            <Badge
+              variant="outline"
+              className="border-primary/30 bg-primary/5 text-primary hover:bg-primary/10 transition-colors"
+            >
+              <Zap className="h-3 w-3 mr-1.5" />
+              AI-powered docs assistant
+            </Badge>
+
+            <h1 className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1] text-foreground">
+              Turn your content into an{" "}
+              <span className="relative">
+                <span className="text-primary">instant</span>
+                <svg
+                  className="absolute left-0 w-full h-2 text-primary/40"
+                  viewBox="0 0 100 8"
+                  preserveAspectRatio="none"
+                >
+                  <path
+                    d="M0 7 Q 25 0, 50 4 T 100 3"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </span>{" "}
+              support assistant.
+            </h1>
+
+            <p className="mt-6 text-lg text-foreground/60 leading-relaxed">
+              Train an on-brand chatbot on PDFs, URLs, and text — embed it with
+              one line of code. Get answers users trust and insights your team
+              can act on.
+            </p>
+
+            <div className="mt-8 flex flex-col sm:flex-row gap-3">
+              <Button
+                size="lg"
+                className="group h-12 px-6 text-base font-medium"
+                onClick={() =>
+                  router.push(isAuthenticated ? "/dashboard" : "/login")
+                }
+              >
+                {isAuthenticated ? "Go to dashboard" : "Get started free"}
+                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="h-12 px-6 text-base font-medium border-white/15 bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all"
+                onClick={() =>
+                  window.open(
+                    "https://github.com/namanbarkiya/convot",
+                    "_blank"
+                  )
+                }
+              >
+                View docs
+              </Button>
+            </div>
+
+            {/* Mini feature highlights */}
+            <div className="mt-10 flex flex-wrap gap-6">
+              <div className="flex items-center gap-2 text-sm text-foreground/60">
+                <div className="flex items-center justify-center h-8 w-8 rounded-lg bg-primary/10 text-primary">
+                  <Clock className="h-4 w-4" />
+                </div>
+                <span>5 min setup</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm text-foreground/60">
+                <div className="flex items-center justify-center h-8 w-8 rounded-lg bg-primary/10 text-primary">
+                  <Shield className="h-4 w-4" />
+                </div>
+                <span>SOC 2 compliant</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm text-foreground/60">
+                <div className="flex items-center justify-center h-8 w-8 rounded-lg bg-primary/10 text-primary">
+                  <Zap className="h-4 w-4" />
+                </div>
+                <span>No-code required</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Right column - Product preview */}
+          <div className="flex-1 xl:flex-none xl:w-[580px]">
+            <ProductPreview className="w-full" />
+          </div>
+        </div>
       </div>
     </section>
   );

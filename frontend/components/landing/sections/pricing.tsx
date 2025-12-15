@@ -10,7 +10,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { InteractiveHoverButton } from "@/components/ui/magicui/interactive-hover-button";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { useAuth } from "@/components/providers/auth-provider";
 import { cn } from "@/lib/utils";
 
@@ -96,13 +97,13 @@ export default function Pricing() {
     }
   };
   return (
-    <section className="py-16">
+    <section className="py-16" id="pricing">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-        <div className="text-center mb-16" id="pricing">
+        <div className="mb-10">
           <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-3">
             Simple, transparent pricing
           </h2>
-          <p className="text-base text-foreground/80 max-w-2xl mx-auto">
+          <p className="text-base text-foreground/70 max-w-2xl">
             Start free and scale as you grow. No hidden fees, cancel anytime.
           </p>
         </div>
@@ -112,37 +113,25 @@ export default function Pricing() {
             <Card
               key={index}
               className={cn(
-                "relative transition-all duration-500",
-                "bg-card",
-                "shadow-xl",
-                "hover:shadow-2xl hover:shadow-primary/10 hover:scale-[1.02]",
+                "relative transition-colors",
+                "bg-white/[0.04] border border-white/10",
+                "hover:bg-white/[0.06]",
                 "flex flex-col h-full",
                 plan.popular
-                  ? "border-2 border-primary shadow-2xl scale-[1.05] shadow-primary/20 bg-primary/5"
-                  : "border border-primary/20 hover:border-primary/40"
+                  ? "ring-1 ring-primary/30 border-primary/30"
+                  : ""
               )}
             >
-              {plan.popular && (
-                <div className="absolute -top-3 md:-top-4 left-1/2 transform -translate-x-1/2 z-20">
-                  <div className="relative">
-                    <div className="absolute inset-0 bg-primary rounded-full blur-sm opacity-75"></div>
-                    <div className="relative bg-primary text-primary-foreground px-3 md:px-6 py-1.5 md:py-2 rounded-full text-xs md:text-sm font-semibold shadow-lg">
-                      <div className="flex items-center gap-1 md:gap-2">
-                        <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-white rounded-full animate-pulse"></div>
-                        <span className="whitespace-nowrap">Most Popular</span>
-                        <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-white rounded-full animate-pulse"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
               <CardHeader
                 className={cn(
-                  "text-center relative z-10",
-                  plan.popular && "pt-8"
+                  "relative z-10"
                 )}
               >
+                {plan.popular && (
+                  <Badge className="w-fit bg-primary text-primary-foreground mb-3">
+                    Most popular
+                  </Badge>
+                )}
                 <CardTitle className="text-xl font-semibold text-foreground">
                   {plan.name}
                 </CardTitle>
@@ -182,30 +171,31 @@ export default function Pricing() {
                   </ul>
                 </div>
 
-                <div className="mt-8 pt-6 border-t border-primary/20">
+                <div className="mt-8 pt-6 border-t border-white/10">
                   {plan.price === "Custom" ? (
-                    <InteractiveHoverButton
+                    <Button
                       onClick={() =>
                         window.open("mailto:info@singlebit.xyz", "_blank")
                       }
                       className="w-full"
                     >
                       Contact Sales
-                    </InteractiveHoverButton>
+                    </Button>
                   ) : plan.price === "Coming Soon" ? (
-                    <InteractiveHoverButton
+                    <Button
                       onClick={() => handleGetStarted(plan.name)}
-                      className="w-full"
+                      variant="outline"
+                      className="w-full border-white/10 bg-white/5 hover:bg-white/10 hover:text-foreground"
                     >
                       Request Access
-                    </InteractiveHoverButton>
+                    </Button>
                   ) : (
-                    <InteractiveHoverButton
+                    <Button
                       onClick={() => handleGetStarted(plan.name)}
                       className="w-full"
                     >
                       {plan.price === "$0" ? "Get Started Free" : "Start Free Trial"}
-                    </InteractiveHoverButton>
+                    </Button>
                   )}
                 </div>
               </CardContent>

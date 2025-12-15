@@ -7,6 +7,7 @@ interface SectionHeaderProps {
   className?: string;
   titleClassName?: string;
   subtitleClassName?: string;
+  align?: "center" | "left";
 }
 
 export function SectionHeader({
@@ -15,9 +16,16 @@ export function SectionHeader({
   className,
   titleClassName,
   subtitleClassName,
+  align = "center",
 }: SectionHeaderProps) {
   return (
-    <div className={cn("text-center mb-12", className)}>
+    <div
+      className={cn(
+        "mb-10",
+        align === "center" ? "text-center" : "text-left",
+        className
+      )}
+    >
       <h2
         className={cn(
           "text-2xl md:text-3xl font-semibold tracking-tight text-foreground mb-3",
@@ -29,7 +37,8 @@ export function SectionHeader({
       {subtitle && (
         <p
           className={cn(
-            "text-base text-foreground/80 max-w-2xl mx-auto",
+            "text-base text-foreground/70 max-w-2xl",
+            align === "center" ? "mx-auto" : "",
             subtitleClassName
           )}
         >

@@ -1,77 +1,74 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Code, Home, LogIn, Moon, Sparkles, User } from "lucide-react";
+import { ArrowUpRight, Github } from "lucide-react";
 import { useAuth } from "@/components/providers/auth-provider";
-import { Dock, DockIcon } from "@/components/ui/magicui/dock";
-import { useDarkMode } from "@/lib/hooks/use-dark-mode";
-import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { TextLogo } from "@/components/ui/text-logo";
 
 export type IconProps = React.HTMLAttributes<SVGElement>;
 
 export default function Navbar() {
-  const [, toggleDark] = useDarkMode();
   const { isAuthenticated } = useAuth();
   const router = useRouter();
 
-  const handleFeaturesClick = () => {
-    document.getElementById("features")?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  const handlePricingClick = () => {
-    document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  const handleProfileClick = () => {
-    if (isAuthenticated) {
-      router.push("/dashboard");
-    } else {
-      router.push("/login");
-    }
-  };
-
   return (
-    <div className="fixed top-0 left-0 w-full z-50">
-      <div className="flex items-center justify-center w-full px-6 pt-4">
-        {/* Navigation Dock */}
-        <Dock
-          iconMagnification={60}
-          iconDistance={100}
-          className="bg-card border border-primary/20 shadow-xl"
-        >
-          <DockIcon
-            title="Back to Top"
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+    <header className="fixed inset-x-0 top-0 z-50">
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-background/85 via-background/60 to-transparent backdrop-blur" />
+
+      <div className="relative pointer-events-auto max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+        <div className="flex items-center justify-between h-16">
+          <Link
+            href="/"
+            className="no-hover flex items-center gap-2"
+            aria-label="Convot home"
           >
-            <Home className="size-full text-foreground/70 hover:text-primary" />
-          </DockIcon>
-          <DockIcon title="Features" onClick={handleFeaturesClick}>
-            <Sparkles className="size-full text-foreground/70 hover:text-primary" />
-          </DockIcon>
-          <DockIcon title="Pricing" onClick={handlePricingClick}>
-            <Code className="size-full text-foreground/70 hover:text-primary" />
-          </DockIcon>
-          <DockIcon title="Toggle Theme">
-            <Moon
-              className={cn(
-                "size-full text-foreground/70 hover:text-primary transition-colors"
-              )}
-              onClick={toggleDark}
-            />
-          </DockIcon>
-          <DockIcon
-            title={isAuthenticated ? "Dashboard" : "Login"}
-            onClick={handleProfileClick}
-          >
-            {isAuthenticated ? (
-              <User className="size-full text-foreground/70 hover:text-primary" />
-            ) : (
-              <LogIn className="size-full text-foreground/70 hover:text-primary" />
-            )}
-          </DockIcon>
-        </Dock>
+            <TextLogo showIcon iconSize={22} className="text-base" />
+          </Link>
+
+          <nav className="hidden md:flex items-center gap-8 text-sm text-foreground/70">
+            <Link
+              href="/#features"
+              className="hover:text-foreground transition-colors"
+            >
+              Features
+            </Link>
+            <Link
+              href="/#pricing"
+              className="hover:text-foreground transition-colors"
+            >
+              Pricing
+            </Link>
+            <Link
+              href="/#how-it-works"
+              className="hover:text-foreground transition-colors"
+            >
+              How it works
+            </Link>
+          </nav>
+
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              className="hidden sm:inline-flex border-white/10 bg-white/5 hover:bg-white/10 hover:text-foreground"
+              onClick={() =>
+                window.open("https://github.com/namanbarkiya/convot", "_blank")
+              }
+            >
+              <Github className="h-4 w-4" />
+              GitHub
+              <ArrowUpRight className="h-4 w-4 opacity-70" />
+            </Button>
+            <Button
+              onClick={() => router.push(isAuthenticated ? "/dashboard" : "/login")}
+            >
+              {isAuthenticated ? "Dashboard" : "Get started"}
+            </Button>
+          </div>
+        </div>
       </div>
-    </div>
+    </header>
   );
 }
