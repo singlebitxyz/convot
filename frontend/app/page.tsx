@@ -9,7 +9,6 @@ import HowItWorks from "@/components/landing/sections/how-it-works";
 import Logos from "@/components/landing/sections/logos";
 import Navbar from "@/components/landing/sections/navbar";
 import Pricing from "@/components/landing/sections/pricing";
-import Testimonials from "@/components/landing/sections/testimonials";
 import { RevealOnScroll } from "@/components/ui/reveal-on-scroll";
 
 export default function LandingPage() {
@@ -40,7 +39,7 @@ export default function LandingPage() {
           </RevealOnScroll>
 
           {/* Features Section */}
-          <div id="features" className="py-4 sm:py-14 scroll-mt-20">
+          <div className="py-4 sm:py-14 scroll-mt-20">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
               <RevealOnScroll direction="up" delay={100}>
                 <SectionHeader

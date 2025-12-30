@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import { getSiteUrl } from "@/lib/site";
 
 export const runtime = "edge";
 
@@ -9,6 +10,7 @@ export const size = {
 };
 
 export default function AppleIcon() {
+  const siteUrl = getSiteUrl();
   return new ImageResponse(
     (
       <div
@@ -21,7 +23,7 @@ export default function AppleIcon() {
         }}
       >
         <img
-          src="https://saas.nbarkiya.xyz/logo/logo-white.png"
+          src={`${siteUrl}/logo/logo-white.png`}
           alt="Convot Logo"
           style={{
             width: "100%",

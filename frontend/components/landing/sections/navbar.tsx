@@ -54,7 +54,7 @@ export default function Navbar() {
               variant="outline"
               className="hidden sm:inline-flex border-white/10 bg-white/5 hover:bg-white/10 hover:text-foreground"
               onClick={() =>
-                window.open("https://github.com/namanbarkiya/convot", "_blank")
+                window.open("https://github.com/singlebitxyz/convot", "_blank")
               }
             >
               <Github className="h-4 w-4" />

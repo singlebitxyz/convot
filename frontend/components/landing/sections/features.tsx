@@ -39,7 +39,7 @@ const features = [
     name: "Upload & Index Content",
     description:
       "Upload PDFs, DOCX files, or add website URLs. Convot automatically extracts, chunks, and indexes your content for intelligent retrieval.",
-    href: "#",
+    href: "/#how-it-works",
     cta: "Learn more",
     className: "col-span-3 lg:col-span-1",
     background: (
@@ -76,7 +76,7 @@ const features = [
     name: "Configure Your Bot",
     description:
       "Create and customize your AI assistant. Set system prompts, choose between OpenAI or Gemini, and configure temperature and token limits.",
-    href: "#",
+    href: "/signup",
     cta: "Learn more",
     className: "col-span-3 lg:col-span-2",
     background: (
@@ -88,7 +88,7 @@ const features = [
     name: "One-Line Embed",
     description:
       "Copy a simple embed script and add it to your website. The chat widget automatically initializes and connects to your trained bot.",
-    href: "#",
+    href: "/signup",
     cta: "Learn more",
     className: "col-span-3 lg:col-span-2",
     background: (
@@ -101,7 +101,7 @@ const features = [
     description:
       "Track query volume, popular questions, unanswered queries, and get insights on what users are asking. Export data as CSV for analysis.",
     className: "col-span-3 lg:col-span-1",
-    href: "#",
+    href: "/login",
     cta: "View Analytics",
     background: (
       <Calendar

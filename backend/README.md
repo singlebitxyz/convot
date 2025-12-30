@@ -27,7 +27,7 @@ Convot is a **production-ready FastAPI backend** that provides everything you ne
 1. **Clone the repository**
 
 ```bash
-git clone https://github.com/namanbarkiya/convot.git
+git clone https://github.com/singlebitxyz/convot.git
 cd convot
 ```
 

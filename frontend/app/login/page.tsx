@@ -1,8 +1,18 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { AuthGuard } from "@/components/auth";
 import { AuthForm } from "@/components/forms/auth-form";
 import { TextLogo } from "@/components/ui/text-logo";
 import { Sparkles } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Login",
+  description: "Sign in to Convot to manage your chatbots and knowledge bases.",
+  robots: {
+    index: false,
+    follow: true,
+  },
+};
 
 export default function LoginPage() {
   return (
@@ -45,11 +55,11 @@ export default function LoginPage() {
           {/* Footer */}
           <p className="mt-8 text-center text-xs text-foreground/40">
             By signing in, you agree to our{" "}
-            <Link href="#" className="text-foreground/60 hover:text-primary transition-colors">
+            <Link href="/terms" className="text-foreground/60 hover:text-primary transition-colors">
               Terms of Service
             </Link>{" "}
             and{" "}
-            <Link href="#" className="text-foreground/60 hover:text-primary transition-colors">
+            <Link href="/privacy" className="text-foreground/60 hover:text-primary transition-colors">
               Privacy Policy
             </Link>
           </p>

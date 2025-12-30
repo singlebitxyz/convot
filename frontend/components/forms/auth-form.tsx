@@ -4,9 +4,8 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2, Mail, Lock, User, ArrowRight } from "lucide-react";
+import { ArrowRight, Loader2, Lock, Mail, User } from "lucide-react";
 import { FormField } from "@/components/forms";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useNotifications } from "@/lib/hooks/use-notifications";
@@ -147,7 +146,8 @@ export const AuthForm: React.FC<AuthFormProps> = ({
         {!isLogin && (
           <div className="rounded-lg border border-primary/20 bg-primary/10 p-3">
             <p className="text-xs text-primary text-center">
-              Email signup is not available yet. Please sign up with Google above.
+              Email signup is not available yet. Please sign up with Google
+              above.
             </p>
           </div>
         )}
@@ -203,8 +203,10 @@ export const AuthForm: React.FC<AuthFormProps> = ({
           {isLogin && (
             <div className="flex justify-end mt-2">
               <Link
-                href="#"
+                href="https://github.com/singlebitxyz/convot/issues"
                 className="text-xs text-foreground/50 hover:text-primary transition-colors"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 Forgot password?
               </Link>

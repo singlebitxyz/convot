@@ -1,12 +1,14 @@
 import { MetadataRoute } from "next";
+import { getSiteUrl } from "@/lib/site";
 
 export default function robots(): MetadataRoute.Robots {
+  const siteUrl = getSiteUrl();
   return {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/dashboard/", "/api/"],
+      disallow: ["/dashboard", "/dashboard/", "/api/"],
     },
-    sitemap: "https://saas.nbarkiya.xyz/sitemap.xml",
+    sitemap: `${siteUrl}/sitemap.xml`,
   };
 }

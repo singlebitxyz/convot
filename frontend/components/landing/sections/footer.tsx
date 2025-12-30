@@ -34,7 +34,7 @@ export default function Footer({ className }: { className?: string }) {
             </p>
             <div className="flex gap-4">
               <a
-                href="https://github.com/namanbarkiya/convot"
+                href="https://github.com/singlebitxyz/convot"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 text-foreground/80 hover:text-primary transition-colors"
@@ -87,7 +87,7 @@ export default function Footer({ className }: { className?: string }) {
             <ul className="space-y-2 text-sm">
               <li>
                 <a
-                  href="https://github.com/namanbarkiya/convot"
+                  href="https://github.com/singlebitxyz/convot"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-foreground/60 hover:text-foreground transition-colors"
@@ -97,7 +97,7 @@ export default function Footer({ className }: { className?: string }) {
               </li>
               <li>
                 <a
-                  href="https://github.com/namanbarkiya/convot"
+                  href="https://github.com/singlebitxyz/convot"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-foreground/60 hover:text-foreground transition-colors"
@@ -107,7 +107,7 @@ export default function Footer({ className }: { className?: string }) {
               </li>
               <li>
                 <a
-                  href="https://github.com/namanbarkiya/convot/issues"
+                  href="https://github.com/singlebitxyz/convot/issues"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-foreground/60 hover:text-foreground transition-colors"
@@ -133,7 +133,7 @@ export default function Footer({ className }: { className?: string }) {
             &copy; {new Date().getFullYear()} convot.
             {/* Built by{" "}
             <a
-              href="https://github.com/namanbarkiya/convot"
+              href="https://github.com/singlebitxyz/convot"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:underline hover:text-primary transition-colors"

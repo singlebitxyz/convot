@@ -1,5 +1,6 @@
 import React from "react";
 import Head from "next/head";
+import { getSiteUrl } from "@/lib/site";
 
 interface PageSEOProps {
   title?: string;
@@ -14,6 +15,7 @@ interface PageSEOProps {
   section?: string;
   tags?: string[];
   structuredData?: object;
+  robots?: string;
 }
 
 export function PageSEO({
@@ -30,7 +32,7 @@ export function PageSEO({
     "knowledge base chatbot",
   ],
   image = "/logo/full-logo-text-white.png",
-  url = "https://saas.nbarkiya.xyz",
+  url = getSiteUrl(),
   type = "website",
   author = "Naman Barkiya",
   publishedTime,
@@ -38,6 +40,7 @@ export function PageSEO({
   section,
   tags = [],
   structuredData,
+  robots = "index, follow",
 }: PageSEOProps) {
   const fullTitle = title.includes("Convot")
     ? title
@@ -46,6 +49,9 @@ export function PageSEO({
     description.length > 160
       ? description.substring(0, 157) + "..."
       : description;
+  const absoluteImage = image.startsWith("http")
+    ? image
+    : `${url}${image.startsWith("/") ? "" : "/"}${image}`;
 
   return (
     <Head>
@@ -60,7 +66,7 @@ export function PageSEO({
       <meta property="og:description" content={fullDescription} />
       <meta property="og:type" content={type} />
       <meta property="og:url" content={url} />
-      <meta property="og:image" content={image} />
+      <meta property="og:image" content={absoluteImage} />
       <meta property="og:site_name" content="Convot" />
       <meta property="og:locale" content="en_US" />
 
@@ -68,7 +74,7 @@ export function PageSEO({
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={fullDescription} />
-      <meta name="twitter:image" content={image} />
+      <meta name="twitter:image" content={absoluteImage} />
       <meta name="twitter:creator" content="@namanbarkiya" />
 
       {/* Article specific meta tags */}
@@ -104,8 +110,8 @@ export function PageSEO({
       )}
 
       {/* Additional SEO Meta Tags */}
-      <meta name="robots" content="index, follow" />
-      <meta name="googlebot" content="index, follow" />
+      <meta name="robots" content={robots} />
+      <meta name="googlebot" content={robots} />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <meta name="theme-color" content="#16171B" />
       <meta name="msapplication-TileColor" content="#16171B" />
@@ -130,13 +136,13 @@ export const TemplateStructuredData = {
   name: "Convot",
   description:
     "Embed intelligent chatbots on your website powered by your own documents, PDFs, URLs, or custom text. Train your bot with custom knowledge bases, choose OpenAI or Gemini, and embed with one line of code.",
-  url: "https://saas.nbarkiya.xyz",
+  url: getSiteUrl(),
   applicationCategory: "BusinessApplication",
   operatingSystem: "Web Browser",
   author: {
     "@type": "Person",
     name: "Naman Barkiya",
-    url: "https://github.com/namanbarkiya/convot",
+    url: "https://github.com/singlebitxyz/convot",
   },
   offers: {
     "@type": "Offer",
@@ -152,14 +158,12 @@ export const OrganizationStructuredData = {
   "@context": "https://schema.org",
   "@type": "Organization",
   name: "Convot",
-  url: "https://saas.nbarkiya.xyz",
-  logo: "https://saas.nbarkiya.xyz/logo/full-logo-text-white.png",
-  sameAs: [
-    "https://github.com/namanbarkiya/convot",
-  ],
+  url: getSiteUrl(),
+  logo: `${getSiteUrl()}/logo/full-logo-text-white.png`,
+  sameAs: ["https://github.com/singlebitxyz/convot"],
   founder: {
     "@type": "Person",
     name: "Naman Barkiya",
-    url: "https://github.com/namanbarkiya/convot",
+    url: "https://github.com/singlebitxyz/convot",
   },
 };

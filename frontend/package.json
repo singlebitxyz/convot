@@ -24,11 +24,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/namanbarkiya/convot.git"
+    "url": "https://github.com/singlebitxyz/convot.git"
   },
-  "homepage": "https://convot.com",
+  "homepage": "https://convot.xyz",
   "bugs": {
-    "url": "https://github.com/namanbarkiya/convot/issues"
+    "url": "https://github.com/singlebitxyz/convot/issues"
   },
   "private": true,
   "scripts": {

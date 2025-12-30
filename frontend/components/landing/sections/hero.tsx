@@ -76,7 +76,7 @@ export default function Hero() {
                 className="h-12 px-6 text-base font-medium border-white/15 bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all"
                 onClick={() =>
                   window.open(
-                    "https://github.com/namanbarkiya/convot",
+                    "https://github.com/singlebitxyz/convot",
                     "_blank"
                   )
                 }

@@ -1,8 +1,18 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { AuthGuard } from "@/components/auth";
 import { AuthForm } from "@/components/forms/auth-form";
 import { TextLogo } from "@/components/ui/text-logo";
 import { Rocket } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Sign up",
+  description: "Create your Convot account and launch your website chatbot in minutes.",
+  robots: {
+    index: false,
+    follow: true,
+  },
+};
 
 export default function SignupPage() {
   return (
@@ -45,11 +55,11 @@ export default function SignupPage() {
           {/* Footer */}
           <p className="mt-8 text-center text-xs text-foreground/40">
             By signing up, you agree to our{" "}
-            <Link href="#" className="text-foreground/60 hover:text-primary transition-colors">
+            <Link href="/terms" className="text-foreground/60 hover:text-primary transition-colors">
               Terms of Service
             </Link>{" "}
             and{" "}
-            <Link href="#" className="text-foreground/60 hover:text-primary transition-colors">
+            <Link href="/privacy" className="text-foreground/60 hover:text-primary transition-colors">
               Privacy Policy
             </Link>
           </p>

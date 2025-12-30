@@ -63,7 +63,7 @@
 1. **Clone the repository**
 
 ```bash
-git clone https://github.com/namanbarkiya/convot.git
+git clone https://github.com/singlebitxyz/convot.git
 cd convot
 ```
 
@@ -223,13 +223,13 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Support
 
-- **GitHub Issues**: [Report bugs or request features](https://github.com/namanbarkiya/convot/issues)
-- **Discussions**: [Join the community](https://github.com/namanbarkiya/convot/discussions)
+- **GitHub Issues**: [Report bugs or request features](https://github.com/singlebitxyz/convot/issues)
+- **Discussions**: [Join the community](https://github.com/singlebitxyz/convot/discussions)
 - **Author**: [Naman Barkiya](https://github.com/namanbarkiya)
 
 ## 🌟 Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=namanbarkiya/convot&type=Date)](https://star-history.com/#namanbarkiya/convot&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=singlebitxyz/convot&type=Date)](https://star-history.com/#singlebitxyz/convot&Date)
 
 ---
 

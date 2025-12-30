@@ -55,8 +55,10 @@ export function LoginForm({
           <div className="flex items-center">
             <Label htmlFor="password">Password</Label>
             <Link
-              href="#"
+              href="https://github.com/singlebitxyz/convot/issues"
               className="ml-auto text-sm underline-offset-4 hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               Forgot your password?
             </Link>
