@@ -7,6 +7,7 @@ import {
   QueryProvider,
   SonnerProvider,
 } from "@/components/providers";
+import { OG_IMAGE_URL, SEO_IMAGE_URL } from "@/lib/seo";
 import { getSiteOrigin } from "@/lib/site";
 import "./globals.css";
 
@@ -68,7 +69,7 @@ export const metadata: Metadata = {
     siteName: "Convot",
     images: [
       {
-        url: new URL("/logo/full-logo-text-white.png", siteOrigin),
+        url: OG_IMAGE_URL,
         alt: "Convot - AI Assistant Platform",
       },
     ],
@@ -79,7 +80,7 @@ export const metadata: Metadata = {
     description:
       "Embed intelligent chatbots on your website powered by your own documents, PDFs, URLs, or custom text. Train your bot with custom knowledge bases, choose OpenAI or Gemini, and embed with one line of code.",
     creator: "@namanbarkiya",
-    images: [new URL("/logo/full-logo-text-white.png", siteOrigin)],
+    images: [SEO_IMAGE_URL],
   },
   robots: {
     index: true,
@@ -151,10 +152,7 @@ export default function RootLayout({
               },
               softwareVersion: "1.0.0",
               datePublished: "2025-01-01",
-              image: new URL(
-                "/logo/full-logo-text-white.png",
-                siteOrigin
-              ).toString(),
+              image: SEO_IMAGE_URL,
               featureList: [
                 "Upload PDFs, DOCX files, or website URLs",
                 "Train bots with custom knowledge bases",
@@ -184,10 +182,7 @@ export default function RootLayout({
                 name: "Naman Barkiya",
                 url: "https://github.com/namanbarkiya",
               },
-              logo: new URL(
-                "/logo/full-logo-text-white.png",
-                siteOrigin
-              ).toString(),
+              logo: SEO_IMAGE_URL,
             }),
           }}
         />

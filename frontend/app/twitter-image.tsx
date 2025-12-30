@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { getSiteUrl } from "@/lib/site";
+import { SEO_IMAGE_URL } from "@/lib/seo";
 
 export const runtime = "edge";
 export const alt = "Convot - AI Assistant Platform";
@@ -9,7 +9,6 @@ export const size = {
 };
 
 export default async function Image() {
-  const siteUrl = getSiteUrl();
   return new ImageResponse(
     (
       <div
@@ -34,7 +33,7 @@ export default async function Image() {
           }}
         >
           <img
-            src={`${siteUrl}/logo/full-logo-text-white.png`}
+            src={SEO_IMAGE_URL}
             alt="Convot Logo"
             style={{
               height: 120,

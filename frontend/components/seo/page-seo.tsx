@@ -1,5 +1,6 @@
 import React from "react";
 import Head from "next/head";
+import { OG_IMAGE_URL, SEO_IMAGE_URL } from "@/lib/seo";
 import { getSiteUrl } from "@/lib/site";
 
 interface PageSEOProps {
@@ -31,7 +32,7 @@ export function PageSEO({
     "Gemini chatbot",
     "knowledge base chatbot",
   ],
-  image = "/logo/full-logo-text-white.png",
+  image = OG_IMAGE_URL,
   url = getSiteUrl(),
   type = "website",
   author = "Naman Barkiya",
@@ -151,7 +152,7 @@ export const TemplateStructuredData = {
   },
   softwareVersion: "1.0.0",
   datePublished: "2025-01-01",
-  image: "/logo/full-logo-text-white.png",
+  image: SEO_IMAGE_URL,
 };
 
 export const OrganizationStructuredData = {
@@ -159,7 +160,7 @@ export const OrganizationStructuredData = {
   "@type": "Organization",
   name: "Convot",
   url: getSiteUrl(),
-  logo: `${getSiteUrl()}/logo/full-logo-text-white.png`,
+  logo: SEO_IMAGE_URL,
   sameAs: ["https://github.com/singlebitxyz/convot"],
   founder: {
     "@type": "Person",
